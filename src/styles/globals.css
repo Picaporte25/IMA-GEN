@@ -1,0 +1,523 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Background Colors - Flat */
+  --bg-primary: #000000;
+  --bg-secondary: #111111;
+  --bg-card: #1a1a1a;
+  --bg-hover: #222222;
+
+  /* Accent Colors - Flat */
+  --accent-orange: #FF6600;
+  --accent-orange-light: #FF8533;
+  --accent-violet: #9333EA;
+  --accent-violet-light: #A855F7;
+  --accent-violet-dark: #7C22CE;
+  --white: #FFFFFF;
+
+  /* Text Colors */
+  --text-primary: #FFFFFF;
+  --text-secondary: #888888;
+  --text-muted: #555555;
+
+  /* Border Colors - Flat */
+  --border-default: #333333;
+  --border-accent: #FF6600;
+  --border-violet: #9333EA;
+
+  /* Status Colors - Flat */
+  --status-success: #10B981;
+  --status-warning: #F59E0B;
+  --status-error: #EF4444;
+  --status-info: #3B82F6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-card);
+  border-radius: 5px;
+  border: 2px solid var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-violet);
+}
+
+/* Flat Button Styles */
+.btn-primary {
+  background: var(--accent-violet);
+  color: var(--white);
+  border: none;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.btn-primary:hover {
+  background: var(--accent-violet-light);
+}
+
+.btn-primary:active {
+  background: var(--accent-violet-dark);
+}
+
+.btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--white);
+  border: 2px solid var(--accent-violet);
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.btn-outline:hover {
+  background: var(--accent-violet);
+  border-color: var(--accent-violet);
+}
+
+.btn-secondary {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.3px;
+  font-size: 13px;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent-orange);
+  color: var(--accent-orange);
+}
+
+/* Flat Card Styles */
+.card-glass {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 28px;
+  transition: border-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent-orange);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+.card-glass:hover {
+  border-color: var(--accent-violet);
+}
+
+.card-glass:hover::before {
+  transform: scaleX(1);
+}
+
+.card-modern {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 16px;
+  padding: 32px;
+  transition: border-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-modern:hover {
+  border-color: var(--accent-violet);
+}
+
+/* Flat Input Styles */
+.input-futuristic {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
+  padding: 16px 20px;
+  border-radius: 10px;
+  width: 100%;
+  transition: border-color 0.2s ease;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.input-futuristic:focus {
+  outline: none;
+  border-color: var(--accent-orange);
+}
+
+.input-futuristic:hover:not(:focus) {
+  border-color: var(--border-accent);
+}
+
+.input-futuristic::placeholder {
+  color: var(--text-muted);
+}
+
+/* Flat Select Styles */
+.select-futuristic {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
+  padding: 16px 20px;
+  border-radius: 10px;
+  width: 100%;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  font-size: 15px;
+  font-weight: 400;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23FF6600'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 20px;
+  padding-right: 48px;
+}
+
+.select-futuristic:focus {
+  outline: none;
+  border-color: var(--accent-violet);
+}
+
+.select-futuristic:hover:not(:focus) {
+  border-color: var(--border-violet);
+}
+
+.select-futuristic option {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+/* Flat Textarea Styles */
+.textarea-futuristic {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
+  padding: 16px 20px;
+  border-radius: 10px;
+  width: 100%;
+  min-height: 140px;
+  resize: vertical;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.textarea-futuristic:focus {
+  outline: none;
+  border-color: var(--accent-orange);
+}
+
+.textarea-futuristic:hover:not(:focus) {
+  border-color: var(--border-accent);
+}
+
+/* Loading Spinner */
+.spinner-futuristic {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-default);
+  border-top-color: var(--accent-orange);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.spinner-small {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-default);
+  border-top-color: var(--accent-violet);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Flat Text Styles */
+.text-neon {
+  color: var(--accent-violet);
+}
+
+.text-gradient-orange {
+  color: var(--accent-orange);
+}
+
+.text-gradient-violet {
+  color: var(--accent-violet);
+}
+
+/* Glow Effects */
+.glow-orange {
+  box-shadow: var(--shadow-neon-orange);
+}
+
+.glow-violet {
+  box-shadow: var(--shadow-neon-violet);
+}
+
+.glow-text {
+  text-shadow: 0 0 20px currentColor;
+}
+
+/* Flat Style Card Selector */
+.style-card {
+  background: var(--bg-card);
+  border: 2px solid var(--border-default);
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.style-card:hover {
+  border-color: var(--accent-violet);
+}
+
+.style-card.selected {
+  border-color: var(--accent-orange);
+}
+
+/* Flat Image Card */
+.image-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.image-card:hover {
+  border-color: var(--accent-violet);
+}
+
+.image-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.image-card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #000000;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.image-card:hover .image-card-overlay {
+  opacity: 1;
+}
+
+/* Progress Bar */
+.progress-futuristic {
+  height: 6px;
+  background: var(--bg-secondary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--gradient-orange-violet);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+}
+
+.badge-orange {
+  background: rgba(255, 107, 0, 0.15);
+  color: var(--accent-orange);
+  border-color: rgba(255, 107, 0, 0.3);
+}
+
+.badge-violet {
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--accent-violet);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+/* Flat Range Slider */
+.range-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--bg-card);
+  outline: none;
+  cursor: pointer;
+}
+
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent-violet);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.range-slider::-webkit-slider-thumb:hover {
+  background: var(--accent-orange);
+}
+
+/* Flat Section Styles */
+.gradient-section-orange {
+  background: rgba(255, 102, 0, 0.05);
+}
+
+.gradient-section-violet {
+  background: rgba(147, 51, 234, 0.05);
+}
+
+.gradient-section-mixed {
+  background: rgba(147, 51, 234, 0.03);
+}
+
+/* Flat Link Styles */
+.link-futuristic {
+  color: var(--accent-violet);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link-futuristic:hover {
+  color: var(--accent-orange);
+  text-decoration: underline;
+}
+
+/* Flat Glow Effects (removed) */
+.glow-orange {
+  /* No effect in flat design */
+}
+
+.glow-violet {
+  /* No effect in flat design */
+}
+
+.glow-text {
+  /* No effect in flat design */
+}
+
+/* Flat Particles Background (removed) */
+.particles-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  opacity: 0.3;
+}
+
+.particle-orange {
+  background: var(--accent-orange);
+}
+
+.particle-violet {
+  background: var(--accent-violet);
+}
