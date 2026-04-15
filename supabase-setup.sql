@@ -1,4 +1,4 @@
--- Supabase Database Setup for Gene-Image
+-- Supabase Database Setup for IMA-GEN
 -- Execute this SQL in the Supabase SQL Editor to create the required tables
 
 -- Create enum types

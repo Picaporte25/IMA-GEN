@@ -15,7 +15,7 @@ export default function Footer() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               </div>
-              <span className="text-2xl font-bold text-white">Gene-Image</span>
+              <span className="text-2xl font-bold text-white">IMA-GEN</span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
               Create stunning AI-generated images with the power of artificial intelligence. Professional quality, instant results.
@@ -92,7 +92,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-gray-700 flex flex-col md:flex-row items-center justify-between gap-6">
           <p className="text-gray-400 text-sm">
-            © {currentYear} Gene-Image. All rights reserved.
+            © {currentYear} IMA-GEN. All rights reserved.
           </p>
           <div className="flex items-center gap-8">
             <a

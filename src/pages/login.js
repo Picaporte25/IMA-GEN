@@ -38,7 +38,7 @@ export default function Login() {
   };
 
   return (
-    <Layout title="Login - Gene-Image">
+    <Layout title="Login - IMA-GEN">
       <div className="min-h-[80vh] flex items-center justify-center px-4">
         <div className="card-glass w-full max-w-md">
           <div className="text-center mb-8">

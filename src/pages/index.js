@@ -82,9 +82,15 @@ export default function Home({ user, credits, selectedExample }) {
     }
   };
   return (
-    <Layout title="Gene-Image - AI Image Generator" user={user} credits={credits}>
-      {/* Hero Section - Flat design */}
-      <section className="relative min-h-[90vh] flex items-center bg-black">
+    <Layout
+      title="IMA-GEN - AI Image Generator | Create Stunning AI Images from Text"
+      description="Transform your ideas into stunning AI-generated images with IMA-GEN. Professional quality, instant results, multiple styles and resolutions. Start creating for free!"
+      keywords="AI image generator, text to image AI, artificial intelligence art, AI graphics creator, machine learning images, digital art generator, automated image creation, AI visual content"
+      user={user}
+      credits={credits}
+    >
+      {/* Hero Section - SEO Optimized */}
+      <section className="relative min-h-[90vh] flex items-center bg-black" aria-label="AI Image Generator Hero Section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left content */}
@@ -100,6 +106,9 @@ export default function Home({ user, credits, selectedExample }) {
                 <br />
                 <span className="text-violet-500">AI Images</span>
               </h1>
+              <h2 className="text-xl text-gray-400 max-w-lg leading-relaxed">
+                Transform your imagination into reality with our cutting-edge AI image generator. Professional quality, instant results.
+              </h2>
 
               <p className="text-xl text-gray-400 max-w-lg leading-relaxed">
                 Transform your imagination into reality with our cutting-edge AI image generator. Professional quality, instant results.
@@ -198,8 +207,8 @@ export default function Home({ user, credits, selectedExample }) {
                 {/* Generated image showcase */}
                 <div className="border-2 border-gray-700 rounded-xl overflow-hidden bg-black">
                   <img
-                    src="/images/xnkpemVxN-CNAq16dHF2D_35BiWg1G.png"
-                    alt="AI Generated Image - Swimming Pool"
+                    src="/images/ima-gen-ai-generated-swimming-pool.png"
+                    alt="AI generated photorealistic swimming pool image showing underwater and above water view with colorful fish, aquatic plants and sunlight caustic patterns"
                     className="w-full h-[450px] object-cover"
                   />
                   <div className="p-6 bg-black border-t border-gray-700">
@@ -214,110 +223,113 @@ export default function Home({ user, credits, selectedExample }) {
         </div>
       </section>
 
-      {/* Features Section - Flat card grid */}
-      <section className="py-24 bg-black">
+      {/* Features Section - SEO Optimized */}
+      <section className="py-24 bg-black" aria-label="How AI Image Generation Works">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              <span className="text-white">How It </span>
-              <span className="text-violet-500">Works</span>
+              <span className="text-white">How AI Image </span>
+              <span className="text-violet-500">Generation Works</span>
             </h2>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Three simple steps to create stunning AI-generated images
+              Three simple steps to create professional AI-generated images for your projects
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {/* Step 1 */}
-            <div className="card-modern relative">
-              <div className="absolute top-6 right-6 w-12 h-12 rounded-lg bg-orange-500 flex items-center justify-center text-white font-bold text-xl">
+            <article className="card-modern relative">
+              <div className="absolute top-6 right-6 w-12 h-12 rounded-lg bg-orange-500 flex items-center justify-center text-white font-bold text-xl" aria-label="Step 1">
                 1
               </div>
               <div className="w-16 h-16 rounded-lg bg-orange-500/20 flex items-center justify-center border border-orange-500/30 mb-6">
-                <svg className="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-3">Describe</h3>
+              <h3 className="text-2xl font-bold text-white mb-3">Describe Your Vision</h3>
               <p className="text-gray-400 mb-4">
-                Write a detailed description of image you want to create
+                Write a detailed description of the AI image you want to create. Be specific about style, mood, and elements.
               </p>
               <div className="bg-black rounded-lg p-4 border border-gray-700">
-                <p className="text-sm text-orange-400 italic">
+                <p className="text-sm text-orange-400 italic" lang="en">
                   "A cyberpunk city at sunset with neon lights and flying vehicles..."
                 </p>
               </div>
-            </div>
+            </article>
 
             {/* Step 2 */}
-            <div className="card-modern relative">
-              <div className="absolute top-6 right-6 w-12 h-12 rounded-lg bg-violet-500 flex items-center justify-center text-white font-bold text-xl">
+            <article className="card-modern relative">
+              <div className="absolute top-6 right-6 w-12 h-12 rounded-lg bg-violet-500 flex items-center justify-center text-white font-bold text-xl" aria-label="Step 2">
                 2
               </div>
               <div className="w-16 h-16 rounded-lg bg-violet-500/20 flex items-center justify-center border border-violet-500/30 mb-6">
-                <svg className="w-8 h-8 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-3">Customize</h3>
+              <h3 className="text-2xl font-bold text-white mb-3">Customize Settings</h3>
               <p className="text-gray-400 mb-4">
-                Choose your style, resolution, and other settings
+                Choose your preferred AI art style, image resolution from 512px to 4K, and generation preferences.
               </p>
-              <div className="flex items-center justify-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-orange-500/20 border border-orange-500/30"></div>
-                <div className="w-8 h-8 rounded-lg bg-violet-500/20 border border-violet-500/30"></div>
-                <div className="w-8 h-8 rounded-lg bg-white/20 border border-white/30"></div>
+              <div className="flex items-center justify-center gap-3" aria-label="Available image styles">
+                <div className="w-8 h-8 rounded-lg bg-orange-500/20 border border-orange-500/30" title="Photorealistic"></div>
+                <div className="w-8 h-8 rounded-lg bg-violet-500/20 border border-violet-500/30" title="Artistic"></div>
+                <div className="w-8 h-8 rounded-lg bg-white/20 border border-white/30" title="Digital Art"></div>
               </div>
-            </div>
+            </article>
 
             {/* Step 3 */}
-            <div className="card-modern relative">
-              <div className="absolute top-6 right-6 w-12 h-12 rounded-lg bg-white flex items-center justify-center text-black font-bold text-xl">
+            <article className="card-modern relative">
+              <div className="absolute top-6 right-6 w-12 h-12 rounded-lg bg-white flex items-center justify-center text-black font-bold text-xl" aria-label="Step 3">
                 3
               </div>
               <div className="w-16 h-16 rounded-lg bg-white/20 flex items-center justify-center border border-white/20 mb-6">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-3">Generate</h3>
+              <h3 className="text-2xl font-bold text-white mb-3">Generate & Download</h3>
               <p className="text-gray-400 mb-4">
-                Get your unique, high-quality AI-generated image
+                Get your unique, high-quality AI-generated image instantly. Full commercial use rights included.
               </p>
               <div className="flex items-center justify-center gap-4">
                 <div className="flex items-center gap-2 text-orange-400">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
                   </svg>
                   <span className="text-sm font-medium">HD Quality</span>
                 </div>
                 <div className="flex items-center gap-2 text-violet-400">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
                   </svg>
-                  <span className="text-sm font-medium">100% Yours</span>
+                  <span className="text-sm font-medium">Commercial Use</span>
                 </div>
               </div>
-            </div>
+            </article>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-20 bg-violet-500/10">
+      {/* Stats Section - Social Proof */}
+      <section className="py-20 bg-violet-500/10" aria-label="IMA-GEN Platform Statistics">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-center mb-12 text-white">
+            Trusted by Creators Worldwide
+          </h2>
           <div className="grid md:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="text-5xl font-bold text-orange-500 mb-2">10M+</div>
-              <div className="text-gray-400">Images Generated</div>
+              <div className="text-gray-400">AI Images Generated</div>
             </div>
             <div className="text-center">
               <div className="text-5xl font-bold text-violet-500 mb-2">500K+</div>
-              <div className="text-gray-400">Happy Users</div>
+              <div className="text-gray-400">Happy Creators</div>
             </div>
             <div className="text-center">
               <div className="text-5xl font-bold text-orange-500 mb-2">4K</div>
-              <div className="text-gray-400">Max Resolution</div>
+              <div className="text-gray-400">Ultra HD Resolution</div>
             </div>
             <div className="text-center">
               <div className="text-5xl font-bold text-violet-500 mb-2">&lt;10s</div>
@@ -327,17 +339,17 @@ export default function Home({ user, credits, selectedExample }) {
         </div>
       </section>
 
-      {/* Benefits Section - Flat layout */}
-      <section className="py-24 bg-black">
+      {/* Benefits Section - SEO Optimized */}
+      <section className="py-24 bg-black" aria-label="Benefits of IMA-GEN AI Image Generator">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              <span className="text-white">Why </span>
-              <span className="text-violet-500">Gene-Image</span>
+              <span className="text-white">Why Choose </span>
+              <span className="text-violet-500">IMA-GEN</span>
               <span className="text-white">?</span>
             </h2>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              The most powerful and user-friendly AI image generator
+              The most powerful and user-friendly AI image generator for creators, marketers, and businesses
             </p>
           </div>
 
@@ -419,7 +431,7 @@ export default function Home({ user, credits, selectedExample }) {
             Ready to Create Amazing Images?
           </h2>
           <p className="text-gray-400 text-xl mb-10 max-w-2xl mx-auto">
-            Join thousands of creators who are already using Gene-Image to bring their ideas to life
+            Join thousands of creators who are already using IMA-GEN to bring their ideas to life
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             {user ? (

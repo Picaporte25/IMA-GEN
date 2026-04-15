@@ -1,0 +1,36 @@
+# Robots.txt for IMA-GEN - AI Image Generator
+# Allow all crawlers to access the site
+
+User-agent: *
+Allow: /
+
+# Disallow private pages
+Disallow: /checkout/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# Sitemap location
+Sitemap: https://ima-gen.com/sitemap.xml
+
+# Crawl delay (optional, adjust as needed)
+Crawl-delay: 1
+
+# Allow major search engines specifically
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: Yandexbot
+Allow: /

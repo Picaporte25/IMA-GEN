@@ -40,18 +40,31 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Missing user ID' });
       }
 
-      // Get package details from the price ID
+      // Get package details from the price ID or custom data
       const priceId = data.items[0]?.price_id;
+      const customData = data.items[0]?.custom_data || {};
       let creditsToAdd = 0;
 
-      if (priceId.includes('50')) creditsToAdd = 50;
-      else if (priceId.includes('150')) creditsToAdd = 150;
-      else if (priceId.includes('350')) creditsToAdd = 350;
-      else if (priceId.includes('800')) creditsToAdd = 800;
+      // Try to get credits from custom data first (recommended approach)
+      if (customData.credits) {
+        creditsToAdd = parseInt(customData.credits);
+      } else {
+        // Fallback: Map price IDs to credits (updated with real Paddle price IDs)
+        const creditMap = {
+          'pri_01kp74j689zk7s6j2h75g4snqq': 10,   // Starter
+          'pri_01kp74nrxms2hc0bz0s67f5bv0': 50,   // Basic
+          'pri_01kp74r26fp6rkh1mykpnda6ss': 100,  // Pro
+          'pri_01kp74tavek4j7f33nbc9f6gwh': 250,  // Creator
+          'pri_01kp74w7926zz400zyadcbhdeg': 500,  // Studio
+          'pri_01kp74y18g2fkjpk2z8fb9bdgf': 1000, // Enterprise
+        };
+
+        creditsToAdd = creditMap[priceId] || 0;
+      }
 
       if (creditsToAdd === 0) {
-        console.error('Unknown price ID:', priceId);
-        return res.status(400).json({ error: 'Unknown price ID' });
+        console.error('Unknown price ID or missing credits:', priceId, customData);
+        return res.status(400).json({ error: 'Unknown price ID or missing credits' });
       }
 
       // Add credits to user

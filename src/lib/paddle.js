@@ -45,37 +45,37 @@ export function calculateEstimatedImages(credits) {
 
 export const CREDIT_PACKAGES = [
   {
-    id: 'price_starter_10',
+    id: 'pri_01kp74j689zk7s6j2h75g4snqq',
     name: 'Starter',
     credits: 10,
     price: 2,
   },
   {
-    id: 'price_basic_50',
+    id: 'pri_01kp74nrxms2hc0bz0s67f5bv0',
     name: 'Basic',
     credits: 50,
     price: 8,
   },
   {
-    id: 'price_pro_100',
+    id: 'pri_01kp74r26fp6rkh1mykpnda6ss',
     name: 'Pro',
     credits: 100,
     price: 15,
   },
   {
-    id: 'price_creator_250',
+    id: 'pri_01kp74tavek4j7f33nbc9f6gwh',
     name: 'Creator',
     credits: 250,
     price: 35,
   },
   {
-    id: 'price_studio_500',
+    id: 'pri_01kp74w7926zz400zyadcbhdeg',
     name: 'Studio',
     credits: 500,
     price: 65,
   },
   {
-    id: 'price_enterprise_1000',
+    id: 'pri_01kp74y18g2fkjpk2z8fb9bdgf',
     name: 'Enterprise',
     credits: 1000,
     price: 120,

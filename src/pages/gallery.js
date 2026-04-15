@@ -24,7 +24,13 @@ export default function Gallery({ user, initialCredits }) {
   }, [user]);
 
   return (
-    <Layout title="My Gallery - Gene-Image" user={user} credits={credits}>
+    <Layout
+      title="My AI Image Gallery - IMA-GEN | Manage Your Generated Images"
+      description="Access your private AI-generated image gallery. Download, manage, and organize your AI artwork created with IMA-GEN's powerful image generation technology."
+      keywords="AI image gallery, manage AI art, download generated images, AI artwork collection, my AI images"
+      user={user}
+      credits={credits}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {!user ? (
           <div className="card-glass text-center py-20">

@@ -1,0 +1,31 @@
+{
+  "name": "IMA-GEN - AI Image Generator",
+  "short_name": "IMA-GEN",
+  "description": "Create stunning AI-generated images with IMA-GEN. Professional quality images in seconds using artificial intelligence.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#8B5CF6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["productivity", "photography", "design", "art"],
+  "screenshots": [],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

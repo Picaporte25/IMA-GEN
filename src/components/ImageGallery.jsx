@@ -37,7 +37,7 @@ export default function ImageGallery({ userId }) {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `gene-image-${Date.now()}.png`;
+      a.download = `ima-gen-${Date.now()}.png`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);

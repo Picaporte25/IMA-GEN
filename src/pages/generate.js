@@ -28,7 +28,13 @@ export default function Generate({ user, initialCredits }) {
   }, [user]);
 
   return (
-    <Layout title="Generate Images - Gene-Image" user={user} credits={credits}>
+    <Layout
+      title="Generate AI Images - Create Professional AI Art with IMA-GEN"
+      description="Create stunning AI-generated images instantly. Choose from multiple styles, resolutions up to 4K, and professional quality. Start generating for free today!"
+      keywords="generate AI images, create AI art, text to image AI, AI image creator, make AI graphics, artificial intelligence image generation"
+      user={user}
+      credits={credits}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-neon">

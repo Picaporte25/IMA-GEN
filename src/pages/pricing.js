@@ -105,7 +105,13 @@ export default function Pricing({ user, credits }) {
   };
 
   return (
-    <Layout title="Pricing - Gene-Image" user={user} credits={credits}>
+    <Layout
+      title="IMA-GEN Pricing - AI Image Generator Credits | Affordable AI Art Plans"
+      description="Choose from affordable AI image generation plans starting at $2.00. Pay-per-use credits, no subscriptions, commercial use included. Generate stunning AI images today!"
+      keywords="AI image generator pricing, cheap AI image credits, affordable AI art generation, pay per use AI images, AI graphics pricing plans"
+      user={user}
+      credits={credits}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="text-center mb-16">

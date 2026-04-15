@@ -1,4 +1,4 @@
-# Gene-Image - AI Image Generator
+# IMA-GEN - AI Image Generator
 
 A modern, futuristic AI image generator built with Next.js, featuring a stunning dark theme with orange/violet accents and glassmorphism effects.
 
@@ -36,7 +36,7 @@ A modern, futuristic AI image generator built with Next.js, featuring a stunning
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd gene-image
+   cd ima-gen
    ```
 
 2. **Install dependencies**
@@ -202,7 +202,7 @@ This project is licensed under the MIT License.
 
 ## Support
 
-For support, please open an issue in the repository or contact support@gene-image.com.
+For support, please open an issue in the repository or contact support@ima-gen.com.
 
 ## Acknowledgments
 
