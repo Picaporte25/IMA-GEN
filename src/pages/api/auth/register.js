@@ -110,6 +110,7 @@ export default async function handler(req, res) {
 
       return res.status(201).json({
         message: 'User created successfully',
+        token: token, // Include token for fallback
         user: {
           id: newUser2.id,
           email: newUser2.email,
@@ -127,6 +128,7 @@ export default async function handler(req, res) {
     secureLog('Registration successful', { userId: maskUserId(newUser.id) });
     res.status(201).json({
       message: 'User created successfully',
+      token: token, // Include token for fallback
       user: {
         id: newUser.id,
         email: newUser.email,

@@ -5,17 +5,24 @@ import { authFetch, getLocalUser } from '@/lib/api';
 import { BEFORE_AFTER_EXAMPLES } from '@/lib/nanoBanana';
 
 export default function Home() {
-  const [user, setUser] = useState(null);
-  const [credits, setCredits] = useState(0);
+  // Initialize with localStorage data to avoid authentication flash
+  const [user, setUser] = useState(() => getLocalUser());
+  const [credits, setCredits] = useState(() => getLocalUser()?.credits || 0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadUser() {
       try {
+        // First, try to get user from API
         const userResponse = await authFetch('/api/auth/verify');
         if (userResponse.ok) {
           const userData = await userResponse.json();
           setUser(userData.user);
+
+          // Also store in localStorage for persistence
+          if (typeof window !== 'undefined' && userData.user) {
+            localStorage.setItem('user', JSON.stringify(userData.user));
+          }
 
           const creditsResponse = await authFetch('/api/credits/balance');
           if (creditsResponse.ok) {
@@ -23,6 +30,13 @@ export default function Home() {
             setCredits(creditsData.credits);
           }
         } else {
+          // Fallback to localStorage if API fails
+          const localUser = getLocalUser();
+          if (localUser) {
+            setUser(localUser);
+            setCredits(localUser.credits || 0);
+          }
+        }
           const localUser = getLocalUser();
           if (localUser) {
             setUser(localUser);
@@ -72,8 +86,8 @@ export default function Home() {
       <Layout
         title="Loading..."
         description="Loading..."
-        user={null}
-        credits={0}
+        user={user || null}
+        credits={credits || 0}
       >
         <div className="flex items-center justify-center min-h-screen">
           <div className="spinner-large" />

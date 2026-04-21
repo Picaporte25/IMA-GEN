@@ -7,8 +7,11 @@
  */
 function getCookieDomain() {
   if (typeof window === 'undefined') {
-    // Server-side
-    const host = process.env.NEXT_PUBLIC_APP_URL || 'localhost';
+    // Server-side - safer approach for Vercel
+    const host = process.env.VERCEL_URL
+      ? `.${process.env.VERCEL_URL.replace(/^[^.]+\./, '')}` // Remove subdomain if exists
+      : process.env.NEXT_PUBLIC_APP_URL || 'localhost';
+
     try {
       const url = new URL(host);
       // For production, use the domain without subdomain for cross-subdomain cookies

@@ -7,7 +7,7 @@ export async function authFetch(url, options = {}) {
     ...options.headers,
   };
 
-  // Add Authorization header if token exists
+  // Add Authorization header if token exists (fallback mechanism)
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
@@ -15,6 +15,7 @@ export async function authFetch(url, options = {}) {
   return fetch(url, {
     ...options,
     headers,
+    credentials: 'include', // Important for cookie-based auth
   });
 }
 
