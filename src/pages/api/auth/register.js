@@ -30,8 +30,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    secureLog('Registration attempt started', { email: maskEmail(email) });
     const { email, password } = req.body;
+    secureLog('Registration attempt started', { email: maskEmail(email) });
 
     // Validate email
     const emailValidation = validateEmail(email);
