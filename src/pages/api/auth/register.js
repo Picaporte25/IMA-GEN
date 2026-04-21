@@ -1,5 +1,9 @@
 import { hashPassword, generateToken } from '@/lib/auth';
+import { validateEmail, validatePassword, sanitizeInput } from '@/lib/validation';
 import { createClient } from '@supabase/supabase-js';
+import { authRateLimit } from '@/lib/rateLimit';
+import { setAuthCookie, applySecurityHeaders } from '@/lib/cookies';
+import { secureLog, secureError, auditLog, maskEmail, securityLog } from '@/lib/logger';
 
 // Create service role client directly in the API route
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -13,74 +17,96 @@ const supabaseServiceClient = createClient(supabaseUrl, supabaseServiceKey, {
 });
 
 export default async function handler(req, res) {
+  // Apply rate limiting
+  const rateLimitResult = await new Promise((resolve) => {
+    authRateLimit(req, res, () => resolve({ limited: false }));
+  });
+
+  if (res.statusCode === 429) {
+    return; // Rate limit response already sent
+  }
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    console.log('🔵 Registration attempt started');
+    secureLog('Registration attempt started', { email: maskEmail(email) });
     const { email, password } = req.body;
-    console.log('🔵 Received email:', email);
 
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required' });
+    // Validate email
+    const emailValidation = validateEmail(email);
+    if (!emailValidation.valid) {
+      securityLog('REGISTRATION_FAILED', 'WARN', { reason: 'invalid_email', email: maskEmail(email) });
+      return res.status(400).json({ error: emailValidation.error });
     }
 
-    console.log('🔵 Service client created:', !!supabaseServiceClient);
-    console.log('🔵 Supabase URL:', supabaseUrl);
+    // Validate password
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.valid) {
+      securityLog('REGISTRATION_FAILED', 'WARN', { reason: 'invalid_password', email: maskEmail(email) });
+      return res.status(400).json({ error: passwordValidation.error });
+    }
+
+    // Sanitize inputs
+    const sanitizedEmail = sanitizeInput(emailValidation.email);
+    const sanitizedPassword = password; // Don't sanitize password - we need the original for hashing
+
+    secureLog('Processing registration', { email: maskEmail(sanitizedEmail) });
+
+    secureLog('Service client initialized', { hasClient: !!supabaseServiceClient });
 
     // Check if user already exists
-    console.log('🔵 Checking if user exists...');
+    secureLog('Checking for existing user', { email: maskEmail(sanitizedEmail) });
     const { data: existingUser, error: checkError } = await supabaseServiceClient
       .from('users')
       .select('id')
-      .eq('email', email)
+      .eq('email', sanitizedEmail)
       .single();
 
-    console.log('🔵 Existing user check - data:', existingUser, 'error:', checkError);
-
     if (existingUser) {
+      securityLog('REGISTRATION_FAILED', 'INFO', { reason: 'user_exists', email: maskEmail(sanitizedEmail) });
       return res.status(400).json({ error: 'User already exists' });
     }
 
     // Hash password
-    console.log('🔵 Hashing password...');
+    secureLog('Hashing password');
     const hashedPassword = await hashPassword(password);
-    console.log('🔵 Password hashed successfully');
+    secureLog('Password hashed successfully');
 
-    // Create user with free credits - bypass RLS
-    console.log('🔵 Creating new user with service role...');
+    // Create user with 1 free credit for trial - bypass RLS
+    secureLog('Creating new user with service role', { email: maskEmail(sanitizedEmail) });
     const { data: newUser, error: createError } = await supabaseServiceClient
       .rpc('create_user', {
-        p_email: email,
+        p_email: sanitizedEmail,
         p_password: hashedPassword,
-        p_credits: 10
+        p_credits: 1
       });
-
-    console.log('🔵 User creation via RPC - data:', newUser, 'error:', createError);
 
     if (createError) {
       // Try direct insert as fallback
-      console.log('🔵 RPC failed, trying direct insert...');
+      secureLog('RPC failed, trying direct insert');
       const { data: newUser2, error: directError } = await supabaseServiceClient
         .from('users')
         .insert({
-          email,
+          email: sanitizedEmail,
           password: hashedPassword,
-          credits: 10
+          credits: 1
         })
         .select()
         .single();
 
-      console.log('🔵 Direct insert - data:', newUser2, 'error:', directError);
-
       if (directError) {
+        secureError('User creation failed', directError);
         throw directError;
       }
 
       // Generate token with successful insert
       const token = generateToken(newUser2);
-      res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Path=/; Max-Age=604800; SameSite=Lax`);
+      setAuthCookie(res, token);
+      applySecurityHeaders(res);
+
+      auditLog('USER_REGISTERED', newUser2.id, { email: maskEmail(newUser2.email) });
+      secureLog('Registration successful', { userId: maskUserId(newUser2.id) });
 
       return res.status(201).json({
         message: 'User created successfully',
@@ -94,9 +120,11 @@ export default async function handler(req, res) {
 
     // Generate token with successful RPC
     const token = generateToken(newUser);
-    res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Path=/; Max-Age=604800; SameSite=Lax`);
+    setAuthCookie(res, token);
+    applySecurityHeaders(res);
 
-    console.log('🔵 Registration successful for:', email);
+    auditLog('USER_REGISTERED', newUser.id, { email: maskEmail(newUser.email) });
+    secureLog('Registration successful', { userId: maskUserId(newUser.id) });
     res.status(201).json({
       message: 'User created successfully',
       user: {
@@ -106,8 +134,8 @@ export default async function handler(req, res) {
       },
     });
   } catch (error) {
-    console.error('❌ Registration error:', error);
-    console.error('❌ Error details:', error.message, error.code, error.hint);
+    secureError('Registration error', error);
+    securityLog('REGISTRATION_ERROR', 'ERROR', { error: error.message });
     res.status(500).json({ error: 'Failed to create user', details: error.message });
   }
 }

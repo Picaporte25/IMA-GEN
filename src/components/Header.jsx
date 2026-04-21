@@ -34,6 +34,11 @@ export default function Header({ user, credits }) {
             <Link href="/gallery" className="text-gray-400 hover:text-white transition-all duration-200 font-medium hover:scale-105 transform">
               Gallery
             </Link>
+            {user && (
+              <Link href="/history" className="text-gray-400 hover:text-white transition-all duration-200 font-medium hover:scale-105 transform">
+                History
+              </Link>
+            )}
             <Link href="/pricing" className="text-gray-400 hover:text-white transition-all duration-200 font-medium hover:scale-105 transform">
               Pricing
             </Link>
@@ -106,6 +111,11 @@ export default function Header({ user, credits }) {
               <Link href="/gallery" className="text-gray-400 hover:text-white transition-all duration-200 py-3 px-4 hover:bg-gray-800 rounded-lg font-medium">
                 Gallery
               </Link>
+              {user && (
+                <Link href="/history" className="text-gray-400 hover:text-white transition-all duration-200 py-3 px-4 hover:bg-gray-800 rounded-lg font-medium">
+                  History
+                </Link>
+              )}
               <Link href="/pricing" className="text-gray-400 hover:text-white transition-all duration-200 py-3 px-4 hover:bg-gray-800 rounded-lg font-medium">
                 Pricing
               </Link>

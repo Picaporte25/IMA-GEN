@@ -1,7 +1,19 @@
 import { comparePassword, generateToken } from '@/lib/auth';
+import { validateEmail, validatePassword, sanitizeInput } from '@/lib/validation';
 import { supabaseAdmin } from '@/lib/db';
+import { authRateLimit } from '@/lib/rateLimit';
+import { setAuthCookie, applySecurityHeaders } from '@/lib/cookies';
+import { secureLog, secureError, auditLog, maskEmail } from '@/lib/logger';
 
 export default async function handler(req, res) {
+  // Apply rate limiting
+  const rateLimitResult = await new Promise((resolve) => {
+    authRateLimit(req, res, () => resolve({ limited: false }));
+  });
+
+  if (res.statusCode === 429) {
+    return; // Rate limit response already sent
+  }
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -9,15 +21,25 @@ export default async function handler(req, res) {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required' });
+    // Validate email
+    const emailValidation = validateEmail(email);
+    if (!emailValidation.valid) {
+      return res.status(400).json({ error: emailValidation.error });
     }
 
-    // Find user
+    // Validate password (basic check - don't reveal complexity requirements on login)
+    if (!password || typeof password !== 'string' || password.length < 1) {
+      return res.status(400).json({ error: 'Password is required' });
+    }
+
+    // Sanitize email input
+    const sanitizedEmail = sanitizeInput(emailValidation.email);
+
+    // Find user using sanitized email
     const { data: user, error } = await supabaseAdmin
       .from('users')
       .select('*')
-      .eq('email', email)
+      .eq('email', sanitizedEmail)
       .single();
 
     if (error || !user) {
@@ -33,30 +55,16 @@ export default async function handler(req, res) {
     // Generate token
     const token = generateToken(user);
 
-    console.log('Login successful for user:', user.email);
-    console.log('Generated token:', token.substring(0, 20) + '...');
+    secureLog('Login successful', { email: maskEmail(user.email) });
+    auditLog('USER_LOGIN', user.id, { email: maskEmail(user.email) });
 
-    // Set cookie with better compatibility for development
-    const isDevelopment = process.env.NODE_ENV !== 'production';
-    const cookieString = `token=${token}; HttpOnly; Path=/; Max-Age=604800; SameSite=${isDevelopment ? 'Lax' : 'Strict'}${isDevelopment ? '' : '; Secure'}`;
-    console.log('Setting cookie:', cookieString.substring(0, 50) + '...');
+    // Set secure cookie
+    setAuthCookie(res, token);
 
-    res.setHeader('Set-Cookie', [
-      cookieString,
-    ]);
+    // Apply security headers
+    applySecurityHeaders(res);
 
-    // Also return token in response for localStorage fallback
     return res.status(200).json({
-      message: 'Login successful',
-      token: token,
-      user: {
-        id: user.id,
-        email: user.email,
-        credits: user.credits,
-      },
-    });
-
-    res.status(200).json({
       message: 'Login successful',
       user: {
         id: user.id,
@@ -65,7 +73,7 @@ export default async function handler(req, res) {
       },
     });
   } catch (error) {
-    console.error('Login error:', error);
+    secureError('Login error', error);
     res.status(500).json({ error: 'Failed to login' });
   }
 }

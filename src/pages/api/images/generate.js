@@ -1,6 +1,8 @@
 import { getUserFromToken, deductCredits, getUserCredits } from '@/lib/auth';
 import { supabaseAdmin } from '@/lib/db';
 import { generateImage, calculateCredits } from '@/lib/nanoBanana';
+import { validateTextInput, sanitizeInput } from '@/lib/validation';
+import { applySecurityHeaders } from '@/lib/cookies';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -13,6 +15,9 @@ export default async function handler(req, res) {
     if (!user) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
+
+    // Apply security headers
+    applySecurityHeaders(res);
 
     // Handle both JSON and FormData
     let prompt, negativePrompt, style, width, height, numberOfImages, referenceImage;
@@ -50,8 +55,41 @@ export default async function handler(req, res) {
       referenceImage = body.referenceImage;
     }
 
-    if (!prompt || prompt.trim() === '') {
-      return res.status(400).json({ error: 'Prompt is required' });
+    // Validate and sanitize prompt
+    const promptValidation = validateTextInput(prompt, 'Prompt', 10, 2000);
+    if (!promptValidation.valid) {
+      return res.status(400).json({ error: promptValidation.error });
+    }
+    prompt = sanitizeInput(promptValidation.value);
+
+    // Sanitize and validate other inputs
+    if (negativePrompt) {
+      const negPromptValidation = validateTextInput(negativePrompt, 'Negative prompt', 0, 500);
+      if (negPromptValidation.valid) {
+        negativePrompt = sanitizeInput(negPromptValidation.value);
+      }
+    }
+
+    if (style) {
+      const styleValidation = validateTextInput(style, 'Style', 0, 100);
+      if (styleValidation.valid) {
+        style = sanitizeInput(styleValidation.value);
+      }
+    }
+
+    // Validate dimensions
+    const validDimensions = [512, 768, 1024, 1536];
+    if (!validDimensions.includes(width) || !validDimensions.includes(height)) {
+      return res.status(400).json({
+        error: `Invalid dimensions. Allowed values: ${validDimensions.join(', ')}px`
+      });
+    }
+
+    // Validate number of images
+    if (numberOfImages < 1 || numberOfImages > 4) {
+      return res.status(400).json({
+        error: 'Number of images must be between 1 and 4'
+      });
     }
 
     // Calculate credits needed
@@ -63,6 +101,35 @@ export default async function handler(req, res) {
         error: 'Insufficient credits',
         creditsNeeded,
         userCredits,
+        message: `You need ${creditsNeeded} credit(s) but only have ${userCredits}. Please upgrade your plan.`
+      });
+    }
+
+    // Validate that the user exists and is active
+    const { data: userCheck, error: userCheckError } = await supabaseAdmin
+      .from('users')
+      .select('id, email, credits, status')
+      .eq('id', user.id)
+      .single();
+
+    if (userCheckError || !userCheck) {
+      return res.status(401).json({ error: 'User not found' });
+    }
+
+    if (userCheck.status === 'suspended') {
+      return res.status(403).json({
+        error: 'Account suspended',
+        message: 'Your account has been suspended. Please contact support.'
+      });
+    }
+
+    // Double-check credits with fresh data
+    if (userCheck.credits < creditsNeeded) {
+      return res.status(402).json({
+        error: 'Insufficient credits',
+        creditsNeeded,
+        userCredits: userCheck.credits,
+        message: 'Your credits have changed. Please refresh and try again.'
       });
     }
 
@@ -118,8 +185,33 @@ export default async function handler(req, res) {
         throw updateError;
       }
 
-      // Deduct credits
-      const remainingCredits = await deductCredits(user.id, creditsNeeded, imageRecord.id);
+      // Deduct credits with transaction
+      let remainingCredits;
+      try {
+        remainingCredits = await deductCredits(user.id, creditsNeeded, imageRecord.id);
+      } catch (creditError) {
+        console.error('Failed to deduct credits:', creditError);
+
+        // Rollback: Mark image as failed due to credit issue
+        await supabaseAdmin
+          .from('images')
+          .update({
+            status: 'failed',
+            error_message: 'Credit deduction failed',
+          })
+          .eq('id', imageRecord.id);
+
+        return res.status(500).json({
+          error: 'Credit processing failed',
+          message: 'Image was generated but there was an issue processing credits. Please contact support.',
+          image: {
+            id: imageRecord.id,
+            prompt: imageRecord.prompt,
+            imageUrls: apiResult.images || [],
+            status: 'completed',
+          },
+        });
+      }
 
       res.status(200).json({
         message: 'Image generated successfully',
