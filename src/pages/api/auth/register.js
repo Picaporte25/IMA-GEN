@@ -3,7 +3,7 @@ import { validateEmail, validatePassword, sanitizeInput } from '@/lib/validation
 import { createClient } from '@supabase/supabase-js';
 import { authRateLimit } from '@/lib/rateLimit';
 import { setAuthCookie, applySecurityHeaders } from '@/lib/cookies';
-import { secureLog, secureError, auditLog, maskEmail, securityLog } from '@/lib/logger';
+import { secureLog, secureError, auditLog, maskEmail, maskUserId, securityLog } from '@/lib/logger';
 
 // Create service role client directly in the API route
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
