@@ -37,12 +37,6 @@ export default function Home() {
             setCredits(localUser.credits || 0);
           }
         }
-          const localUser = getLocalUser();
-          if (localUser) {
-            setUser(localUser);
-            setCredits(localUser.credits || 0);
-          }
-        }
       } catch (error) {
         console.error('Failed to load user:', error);
         const localUser = getLocalUser();
