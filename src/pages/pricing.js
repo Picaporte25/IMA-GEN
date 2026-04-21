@@ -8,7 +8,7 @@ const PLANS = [
     price: 2,
     description: 'Perfect for trying out',
     features: [
-      '10 image generations',
+      '10 rooms staged',
       'Standard resolution',
       'Email support',
       'Commercial use',
@@ -20,7 +20,7 @@ const PLANS = [
     price: 8,
     description: 'Great for casual users',
     features: [
-      '50 image generations',
+      '50 rooms staged',
       'Standard resolution',
       'Email support',
       'Commercial use',
@@ -32,7 +32,7 @@ const PLANS = [
     price: 15,
     description: 'Most popular choice',
     features: [
-      '100 image generations',
+      '100 rooms staged',
       'High resolution up to 2K',
       'Priority support',
       'Commercial use',
@@ -40,12 +40,12 @@ const PLANS = [
     ],
   },
   {
-    name: 'Creator',
+    name: 'Agent',
     credits: 250,
     price: 35,
-    description: 'For serious creators',
+    description: 'For busy agents',
     features: [
-      '250 image generations',
+      '250 rooms staged',
       'Ultra HD up to 4K',
       'Priority support',
       'Commercial use',
@@ -54,12 +54,12 @@ const PLANS = [
     ],
   },
   {
-    name: 'Studio',
+    name: 'Agency',
     credits: 500,
     price: 65,
-    description: 'Professional teams',
+    description: 'For real estate agencies',
     features: [
-      '500 image generations',
+      '500 rooms staged',
       'Ultra HD up to 4K',
       'Priority support',
       'Commercial use',
@@ -71,9 +71,9 @@ const PLANS = [
     name: 'Enterprise',
     credits: 1000,
     price: 120,
-    description: 'For large teams',
+    description: 'For large brokerages',
     features: [
-      '1000 image generations',
+      '1000 rooms staged',
       'Ultra HD up to 4K',
       'Dedicated support',
       'Commercial use',
@@ -106,9 +106,9 @@ export default function Pricing({ user, credits }) {
 
   return (
     <Layout
-      title="IMA-GEN Pricing - AI Image Generator Credits | Affordable AI Art Plans"
-      description="Choose from affordable AI image generation plans starting at $2.00. Pay-per-use credits, no subscriptions, commercial use included. Generate stunning AI images today!"
-      keywords="AI image generator pricing, cheap AI image credits, affordable AI art generation, pay per use AI images, AI graphics pricing plans"
+      title="Virtual Staging Pricing | Professional Real Estate Staging Credits"
+      description="Affordable virtual staging pricing for real estate professionals. Pay-per-use credits, no subscriptions, commercial use included. Transform properties instantly!"
+      keywords="virtual staging pricing, real estate staging costs, affordable property staging, pay per use staging, AI furniture placement pricing"
       user={user}
       credits={credits}
     >
@@ -119,7 +119,7 @@ export default function Pricing({ user, credits }) {
             Simple, Transparent Pricing
           </h1>
           <p className="text-xl text-text-secondary max-w-2xl mx-auto">
-            Generate stunning AI images at affordable prices. Pay only for what you use.
+            Stage your properties at affordable prices. Pay only for what you use.
           </p>
           <div className="mt-6 flex items-center justify-center gap-8 text-sm text-text-muted">
             <div className="flex items-center gap-2">
@@ -196,8 +196,8 @@ export default function Pricing({ user, credits }) {
                 How do credits work?
               </h3>
               <p className="text-text-secondary text-sm">
-                Each image generation consumes credits based on resolution. Standard 1024×1024 images cost 1 credit each.
-                Higher resolutions use more credits. You can generate images until your credits run out.
+                Each room staging consumes credits based on image quality. Standard 1024×1024 staging costs 2 credits each.
+                Higher quality staging uses more credits. You can stage rooms until your credits run out.
               </p>
             </div>
 
@@ -212,11 +212,11 @@ export default function Pricing({ user, credits }) {
 
             <div className="card-glass">
               <h3 className="text-lg font-semibold text-text-primary mb-2">
-                Can I use generated images commercially?
+                Can I use staged images commercially?
               </h3>
               <p className="text-text-secondary text-sm">
-                Yes! All images you generate are 100% yours to use for any purpose, including commercial projects,
-                YouTube, social media, websites, and more.
+                Yes! All staged images are 100% yours to use for any purpose, including MLS listings,
+                marketing materials, brochures, websites, and social media.
               </p>
             </div>
 
@@ -234,7 +234,7 @@ export default function Pricing({ user, credits }) {
                 Is there a free trial?
               </h3>
               <p className="text-text-secondary text-sm">
-                Yes! When you sign up, you get 10 free credits to try out the service. No credit card required.
+                Yes! When you sign up, you get 10 free rooms to stage. No credit card required.
               </p>
             </div>
           </div>

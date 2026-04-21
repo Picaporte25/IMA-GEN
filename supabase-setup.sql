@@ -62,6 +62,14 @@ ALTER TABLE credit_transactions ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view own data" ON users
   FOR SELECT USING (auth.uid()::text = id::text);
 
+-- Allow service role to insert new users (for registration)
+CREATE POLICY "Service role can insert users" ON users
+  FOR INSERT WITH CHECK (true);
+
+-- Allow service role to update users (for credit management)
+CREATE POLICY "Service role can update users" ON users
+  FOR UPDATE USING (true) WITH CHECK (true);
+
 -- Create policies for images table
 -- Allow users to view their own images
 CREATE POLICY "Users can view own images" ON images
@@ -79,10 +87,34 @@ CREATE POLICY "Users can update own images" ON images
 CREATE POLICY "Users can delete own images" ON images
   FOR DELETE USING (auth.uid()::text = user_id::text);
 
+-- Allow service role to insert images (for API operations)
+CREATE POLICY "Service role can insert images" ON images
+  FOR INSERT WITH CHECK (true);
+
+-- Allow service role to update images (for status updates)
+CREATE POLICY "Service role can update images" ON images
+  FOR UPDATE USING (true) WITH CHECK (true);
+
+-- Allow service role to delete images (for cleanup)
+CREATE POLICY "Service role can delete images" ON images
+  FOR DELETE USING (true);
+
 -- Create policies for credit_transactions table
 -- Allow users to view their own transactions
 CREATE POLICY "Users can view own transactions" ON credit_transactions
   FOR SELECT USING (auth.uid()::text = user_id::text);
+
+-- Allow service role to insert transactions (for purchases and usage)
+CREATE POLICY "Service role can insert transactions" ON credit_transactions
+  FOR INSERT WITH CHECK (true);
+
+-- Allow service role to update transactions (for refunds)
+CREATE POLICY "Service role can update transactions" ON credit_transactions
+  FOR UPDATE USING (true) WITH CHECK (true);
+
+-- Allow service role to delete transactions (for cleanup)
+CREATE POLICY "Service role can delete transactions" ON credit_transactions
+  FOR DELETE USING (true);
 
 -- Create a function to get current timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()

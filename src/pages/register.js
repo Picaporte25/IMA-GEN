@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Layout from '@/components/Layout';
 
 export default function Register() {
+  console.log('🟢 Register component rendered');
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,12 +16,18 @@ export default function Register() {
     e.preventDefault();
     setError('');
 
+    console.log('🔵 Form submission started');
+    console.log('🔵 Email:', email);
+    console.log('🔵 Password length:', password.length);
+
     if (password !== confirmPassword) {
+      console.log('❌ Passwords do not match');
       setError('Passwords do not match');
       return;
     }
 
     if (password.length < 6) {
+      console.log('❌ Password too short');
       setError('Password must be at least 6 characters');
       return;
     }
@@ -28,24 +35,31 @@ export default function Register() {
     setLoading(true);
 
     try {
+      console.log('🔵 Sending registration request...');
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
 
+      console.log('🔵 Response status:', response.status);
       const data = await response.json();
+      console.log('🔵 Response data:', data);
 
       if (!response.ok) {
         throw new Error(data.error || 'Registration failed');
       }
 
-      // Redirect to generate page
-      router.push('/generate');
+      console.log('🔵 Registration successful, redirecting...');
+      // Redirect to generator or generate page based on query parameter
+      const redirectPath = router.query.redirect === 'generator' ? '/#generator' : '/generate';
+      router.push(redirectPath);
     } catch (err) {
+      console.error('❌ Registration error:', err);
       setError(err.message || 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
+      console.log('🔵 Form submission completed');
     }
   };
 
@@ -121,6 +135,7 @@ export default function Register() {
 
             <button
               type="submit"
+              onClick={(e) => console.log('🔴 Button clicked')}
               disabled={loading}
               className="btn-primary w-full py-4 flex items-center justify-center gap-2"
             >

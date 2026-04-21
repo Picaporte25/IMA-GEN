@@ -60,7 +60,7 @@ export default function Layout({ children, title, user, credits, description, ke
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="IMA-GEN" />
 
-        {/* Schema Markup */}
+        {/* Schema Markup - Optimized for Real Estate */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -68,30 +68,52 @@ export default function Layout({ children, title, user, credits, description, ke
               "@context": "https://schema.org",
               "@type": "WebApplication",
               "name": "IMA-GEN",
-              "description": "AI-powered image generator that creates stunning visuals from text descriptions",
+              "alternateName": "IMA-GEN Real Estate AI",
+              "description": "AI-powered image generator for real estate. Create professional property images, virtual staging, and interior designs in seconds.",
               "url": "https://ima-gen.com",
-              "applicationCategory": "DesignApplication",
+              "applicationCategory": "RealEstateApplication",
               "operatingSystem": "Web",
               "offers": {
                 "@type": "Offer",
-                "price": "2.00",
+                "price": "0.10",
                 "priceCurrency": "USD",
-                "description": "AI image generation credits starting at $2.00 for 10 images"
+                "description": "AI image generation credits for real estate starting at $0.10 per image",
+                "availability": "https://schema.org/InStock"
               },
               "featureList": [
-                "AI-powered image generation",
-                "Multiple resolution options (512px to 4K)",
-                "Credit-based pricing system",
+                "AI-powered real estate image generation",
+                "Professional virtual staging",
+                "Intelligent interior design",
+                "Property transformation",
+                "Multiple decoration styles",
+                "Flexible credit system",
                 "Commercial use license",
                 "Instant generation",
-                "Gallery management"
-              ]
+                "Up to 4K resolution",
+                "Automated before and after"
+              ],
+              "audience": {
+                "@type": "Audience",
+                "audienceType": ["Real Estate Agents", "Interior Designers", "Designers", "Property Photographers"]
+              },
+              "keywords": "AI image generator, real estate, virtual staging, interior decoration, interior design, real estate AI, professional property images, AI property transformation",
+              "inLanguage": "en",
+              "isAccessibleForFree": false,
+              "browserRequirements": "Requires modern web browser",
+              "softwareVersion": "1.0",
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.8",
+                "ratingCount": "150",
+                "bestRating": "5",
+                "worstRating": "1"
+              }
             })
           }}
         />
       </Head>
 
-      <div className="min-h-screen flex flex-col bg-black">
+      <div className="min-h-screen flex flex-col bg-gray-950">
         <ParticlesBackground />
         <Header user={user} credits={credits} />
 

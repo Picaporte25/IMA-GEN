@@ -71,19 +71,19 @@ export default function ImageGenerator({ userCredits, onCreditUpdate }) {
 
   return (
     <div className="card-glass max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold mb-6 text-violet-500">Generate AI Images</h2>
+      <h2 className="text-3xl font-bold mb-6 text-violet-500">Stage Your Room</h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Prompt Input */}
         <div>
           <label htmlFor="prompt" className="block text-sm font-medium text-gray-400 mb-2">
-            Describe your image <span className="text-orange-500">*</span>
+            Describe your room <span className="text-orange-500">*</span>
           </label>
           <textarea
             id="prompt"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder="A futuristic cityscape at sunset with flying cars and neon lights, cyberpunk style..."
+            placeholder="A modern living room with contemporary furniture, warm lighting, floor-to-ceiling windows..."
             className="textarea-futuristic"
             rows={4}
             disabled={generating}
@@ -99,7 +99,7 @@ export default function ImageGenerator({ userCredits, onCreditUpdate }) {
             id="negativePrompt"
             value={negativePrompt}
             onChange={(e) => setNegativePrompt(e.target.value)}
-            placeholder="blurry, low quality, watermark, text, logo..."
+            placeholder="clutter, dated furniture, poor lighting, dark spaces..."
             className="textarea-futuristic"
             rows={2}
             disabled={generating}
@@ -109,7 +109,7 @@ export default function ImageGenerator({ userCredits, onCreditUpdate }) {
         {/* Style Selector */}
         <div>
           <label className="block text-sm font-medium text-gray-400 mb-3">
-            Style (optional)
+            Design Style (optional)
           </label>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <button
@@ -141,7 +141,7 @@ export default function ImageGenerator({ userCredits, onCreditUpdate }) {
           {/* Resolution */}
           <div>
             <label className="block text-sm font-medium text-gray-400 mb-3">
-              Resolution
+              Image Quality
             </label>
             <div className="space-y-2">
               {IMAGE_RESOLUTIONS.map((res) => (
@@ -164,7 +164,7 @@ export default function ImageGenerator({ userCredits, onCreditUpdate }) {
           {/* Number of Images */}
           <div>
             <label className="block text-sm font-medium text-gray-400 mb-3">
-              Number of Images
+              Number of Variations
             </label>
             <div className="space-y-2">
               {[1, 2, 4].map((num) => (
@@ -175,7 +175,7 @@ export default function ImageGenerator({ userCredits, onCreditUpdate }) {
                   className={`w-full style-card text-center ${numberOfImages === num ? 'selected' : ''}`}
                   disabled={generating}
                 >
-                  <span className="font-medium text-white">{num} image{num > 1 ? 's' : ''}</span>
+                  <span className="font-medium text-white">{num} variation{num > 1 ? 's' : ''}</span>
                   <span className="block text-xs text-gray-400 mt-1">
                     {calculateCredits(resolution.width, resolution.height, num)} credits
                   </span>
@@ -190,11 +190,11 @@ export default function ImageGenerator({ userCredits, onCreditUpdate }) {
           <h3 className="text-lg font-semibold text-white mb-4">Cost Summary</h3>
           <div className="space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-gray-400">Resolution:</span>
+              <span className="text-gray-400">Image quality:</span>
               <span className="text-white font-medium">{resolution.label}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-gray-400">Number of images:</span>
+              <span className="text-gray-400">Number of variations:</span>
               <span className="text-white font-medium">{numberOfImages}</span>
             </div>
             <div className="flex justify-between items-center">
@@ -247,14 +247,14 @@ export default function ImageGenerator({ userCredits, onCreditUpdate }) {
           {generating ? (
             <>
               <div className="spinner-small" />
-              <span>Generating...</span>
+              <span>Staging room...</span>
             </>
           ) : (
             <>
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-              <span>Generate Image{numberOfImages > 1 ? 's' : ''}</span>
+              <span>Stage Room{numberOfImages > 1 ? 's' : ''}</span>
             </>
           )}
         </button>
@@ -263,14 +263,14 @@ export default function ImageGenerator({ userCredits, onCreditUpdate }) {
       {/* Tips */}
       <div className="mt-8 pt-6 border-t border-gray-700">
         <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
-          Tips for better results
+          Tips for better staging
         </h3>
         <ul className="text-sm text-gray-500 space-y-2 list-disc list-inside">
-          <li>Be specific about the subject, style, and mood</li>
-          <li>Include details about lighting, colors, and composition</li>
-          <li>Use negative prompts to avoid unwanted elements</li>
-          <li>Higher resolution costs more credits but produces better quality</li>
-          <li>Multiple images give you more options to choose from</li>
+          <li>Be specific about room type and desired furniture style</li>
+          <li>Include details about lighting, colors, and atmosphere</li>
+          <li>Use negative prompts to avoid cluttered or dated looks</li>
+          <li>Higher quality costs more credits but produces better MLS results</li>
+          <li>Multiple variations give you more staging options to choose from</li>
         </ul>
       </div>
     </div>

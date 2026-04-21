@@ -8,7 +8,12 @@
       "Bash(findstr :3000)",
       "Bash(curl:*)",
       "WebSearch",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(rm:*)",
+      "Bash(sed:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm list:*)",
+      "Bash(node -c \"require\\('fs'\\).readFileSync\\('src/components/ElegantImageGenerator.jsx', 'utf-8'\\)\")"
     ]
   }
 }

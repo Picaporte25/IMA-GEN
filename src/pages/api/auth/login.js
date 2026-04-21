@@ -33,8 +33,28 @@ export default async function handler(req, res) {
     // Generate token
     const token = generateToken(user);
 
-    // Set cookie
-    res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Path=/; Max-Age=604800; SameSite=Lax`);
+    console.log('Login successful for user:', user.email);
+    console.log('Generated token:', token.substring(0, 20) + '...');
+
+    // Set cookie with better compatibility for development
+    const isDevelopment = process.env.NODE_ENV !== 'production';
+    const cookieString = `token=${token}; HttpOnly; Path=/; Max-Age=604800; SameSite=${isDevelopment ? 'Lax' : 'Strict'}${isDevelopment ? '' : '; Secure'}`;
+    console.log('Setting cookie:', cookieString.substring(0, 50) + '...');
+
+    res.setHeader('Set-Cookie', [
+      cookieString,
+    ]);
+
+    // Also return token in response for localStorage fallback
+    return res.status(200).json({
+      message: 'Login successful',
+      token: token,
+      user: {
+        id: user.id,
+        email: user.email,
+        credits: user.credits,
+      },
+    });
 
     res.status(200).json({
       message: 'Login successful',

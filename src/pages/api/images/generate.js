@@ -14,14 +14,41 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    const {
-      prompt,
-      negativePrompt = '',
-      style = '',
-      width = 1024,
-      height = 1024,
-      numberOfImages = 1,
-    } = req.body;
+    // Handle both JSON and FormData
+    let prompt, negativePrompt, style, width, height, numberOfImages, referenceImage;
+
+    if (req.headers['content-type']?.includes('multipart/form-data')) {
+      // FormData handling
+      const formData = req.body;
+      prompt = formData.prompt;
+      negativePrompt = formData.negativePrompt || '';
+      style = formData.style || '';
+      width = parseInt(formData.width) || 1024;
+      height = parseInt(formData.height) || 1024;
+      numberOfImages = parseInt(formData.numberOfImages) || 1;
+
+      // Handle reference image - convert to base64 or upload to storage
+      if (formData.referenceImage) {
+        // For now, convert to base64 (in production, you'd upload to storage)
+        const chunks = [];
+        for await (const chunk of formData.referenceImage) {
+          chunks.push(chunk);
+        }
+        const buffer = Buffer.concat(chunks);
+        const base64 = `data:${formData.referenceImage.mimeType || 'image/jpeg'};base64,${buffer.toString('base64')}`;
+        referenceImage = base64;
+      }
+    } else {
+      // JSON handling
+      const body = req.body;
+      prompt = body.prompt;
+      negativePrompt = body.negativePrompt || '';
+      style = body.style || '';
+      width = body.width || 1024;
+      height = body.height || 1024;
+      numberOfImages = body.numberOfImages || 1;
+      referenceImage = body.referenceImage;
+    }
 
     if (!prompt || prompt.trim() === '') {
       return res.status(400).json({ error: 'Prompt is required' });
@@ -62,13 +89,20 @@ export default async function handler(req, res) {
 
     try {
       // Call Nano Banana API
-      const apiResult = await generateImage(prompt, {
+      const generationOptions = {
         negativePrompt,
         style,
         width,
         height,
         numberOfImages,
-      });
+      };
+
+      // Add reference image if provided
+      if (referenceImage) {
+        generationOptions.referenceImage = referenceImage;
+      }
+
+      const apiResult = await generateImage(prompt, generationOptions);
 
       // Update image record with results
       const { error: updateError } = await supabaseAdmin

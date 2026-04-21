@@ -28,8 +28,25 @@ export default function Login() {
         throw new Error(data.error || 'Login failed');
       }
 
-      // Redirect to generate page or home
-      router.push(data.user ? '/generate' : '/');
+      console.log('Login response:', data);
+
+      // Store token and user in localStorage for fallback
+      if (typeof window !== 'undefined') {
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+        }
+        if (data.user) {
+          localStorage.setItem('user', JSON.stringify(data.user));
+        }
+
+        // Redirect to generator or generate page based on query parameter
+        const redirectPath = router.query.redirect === 'generator' ? '/#generator' : '/generate';
+        router.push(data.user ? redirectPath : '/');
+      } else {
+        // Redirect to generator or generate page based on query parameter
+        const redirectPath = router.query.redirect === 'generator' ? '/#generator' : '/generate';
+        router.push(data.user ? redirectPath : '/');
+      }
     } catch (err) {
       setError(err.message || 'Login failed. Please try again.');
     } finally {

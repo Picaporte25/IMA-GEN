@@ -29,9 +29,29 @@ export function verifyToken(token) {
 }
 
 export async function getUserFromToken(context) {
-  const token = context.req?.cookies?.token || context.req?.headers?.authorization?.replace('Bearer ', '');
+  // Try multiple ways to get the token
+  let token = null;
+
+  // Method 1: Direct cookie access
+  if (context.req?.cookies?.token) {
+    token = context.req.cookies.token;
+  }
+  // Method 2: Authorization header
+  else if (context.req?.headers?.authorization) {
+    token = context.req.headers.authorization.replace('Bearer ', '');
+  }
+  // Method 3: Cookie header parsing (for some environments)
+  else if (context.req?.headers?.cookie) {
+    const cookies = context.req.headers.cookie.split(';').reduce((acc, cookie) => {
+      const [key, value] = cookie.trim().split('=');
+      acc[key] = value;
+      return acc;
+    }, {});
+    token = cookies.token;
+  }
 
   if (!token) {
+    console.log('No token found in request');
     return null;
   }
 
