@@ -42,7 +42,7 @@ export default function Checkout({ user, credits, plan }) {
 
   if (!user) {
     return (
-      <Layout title="Checkout - IMA-GEN" user={user} credits={credits}>
+      <Layout title="Checkout - PixelAlchemy" user={user} credits={credits}>
         <div className="max-w-4xl mx-auto px-4 py-20">
           <div className="card-glass text-center py-20">
             <h2 className="text-2xl font-bold mb-4 text-neon">Please Login First</h2>
@@ -55,7 +55,7 @@ export default function Checkout({ user, credits, plan }) {
   }
 
   return (
-    <Layout title="Checkout - IMA-GEN" user={user} credits={credits}>
+    <Layout title="Checkout - PixelAlchemy" user={user} credits={credits}>
       <div className="max-w-4xl mx-auto px-4 py-20">
         {loading ? (
           <div className="card-glass text-center py-20">

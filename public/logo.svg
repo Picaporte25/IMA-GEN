@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Palette body -->
+  <path d="M32 4C16.536 4 4 16.536 4 32s12.536 28 28 28c3.525 0 6.895-.653 10-1.846V58c0-1.657 1.343-3 3-3s3 1.343 3 3v.154C57.347 56.347 60 53.477 60 50c0-15.464-12.536-28-28-28z" fill="#8B5CF6"/>
+
+  <!-- Thumb hole -->
+  <circle cx="48" cy="48" r="8" fill="#1F2937"/>
+
+  <!-- Color wells -->
+  <circle cx="20" cy="24" r="6" fill="#EF4444"/> <!-- Red -->
+  <circle cx="32" cy="20" r="6" fill="#F59E0B"/> <!-- Orange -->
+  <circle cx="44" cy="24" r="6" fill="#10B981"/> <!-- Green -->
+  <circle cx="18" cy="38" r="6" fill="#3B82F6"/> <!-- Blue -->
+  <circle cx="32" cy="42" r="6" fill="#8B5CF6"/> <!-- Purple -->
+</svg>

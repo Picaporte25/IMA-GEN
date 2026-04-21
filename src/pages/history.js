@@ -117,8 +117,8 @@ export default function TransactionHistory() {
   return (
     <Layout>
       <Head>
-        <title>Historial de Transacciones | Qwen Gen Image</title>
-        <meta name="description" content="Historial completo de tus compras y uso de créditos en Qwen Gen Image" />
+        <title>Transaction History | PixelAlchemy</title>
+        <meta name="description" content="Complete history of your purchases and credit usage on PixelAlchemy" />
       </Head>
 
       <div className="max-w-6xl mx-auto px-4 py-8">

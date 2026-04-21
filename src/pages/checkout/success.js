@@ -3,7 +3,7 @@ import { getUserFromToken } from '@/lib/auth';
 
 export default function CheckoutSuccess({ user, credits }) {
   return (
-    <Layout title="Payment Successful - IMA-GEN" user={user} credits={credits}>
+    <Layout title="Payment Successful - PixelAlchemy" user={user} credits={credits}>
       <div className="max-w-4xl mx-auto px-4 py-20">
         <div className="card-glass text-center py-20">
           <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-status-success/20 to-status-success/5 flex items-center justify-center border border-status-success/30">

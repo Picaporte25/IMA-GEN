@@ -29,9 +29,9 @@ export default function Edit({ user, initialCredits }) {
 
   return (
     <Layout
-      title="Edit Properties - Real Estate Virtual Staging | VirtuStage"
-      description="Transform your property photos with AI-powered editing. Change wall materials, flooring, furniture, and more while preserving 100% of original structure."
-      keywords="real estate photo editing, AI property enhancement, wall material change, flooring replacement, furniture update, virtual staging"
+      title="Edit Properties - AI Image Enhancement | PixelAlchemy"
+      description="Transform your images with AI-powered editing. Change styles, enhance quality, and create stunning variations while preserving your original vision."
+      keywords="AI image editing, photo enhancement, style transfer, image transformation, AI art generation, PixelAlchemy"
       user={user}
       credits={credits}
     >

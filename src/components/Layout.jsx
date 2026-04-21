@@ -7,42 +7,42 @@ export default function Layout({ children, title, user, credits, description, ke
   return (
     <>
       <Head>
-        <title>{title || 'IMA-GEN - AI Image Generator | Create Stunning AI Images'}</title>
+        <title>{title || 'PixelAlchemy - AI Image Generator | Create Stunning AI Images'}</title>
         <meta
           name="description"
-          content={description || 'Create stunning AI-generated images with IMA-GEN. Professional quality images in seconds using artificial intelligence. Transform your imagination into reality with our cutting-edge AI image generator.'}
+          content={description || 'Create stunning AI-generated images with PixelAlchemy. Professional quality images in seconds using artificial intelligence. Transform your imagination into reality with our cutting-edge AI image generator.'}
         />
         <meta
           name="keywords"
-          content={keywords || 'AI image generator, artificial intelligence images, AI art, text to image, image generation, AI graphics, machine learning images, creative AI, digital art AI, automated image creation'}
+          content={keywords || 'AI image generator, artificial intelligence images, AI art, text to image, image generation, AI graphics, machine learning images, creative AI, digital art AI, automated image creation, PixelAlchemy'}
         />
-        <meta name="author" content="IMA-GEN" />
+        <meta name="author" content="PixelAlchemy" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://ima-gen.com/" />
-        <meta property="og:title" content={title || 'IMA-GEN - AI Image Generator'} />
+        <meta property="og:url" content="https://pixelalchemy.com/" />
+        <meta property="og:title" content={title || 'PixelAlchemy - AI Image Generator'} />
         <meta
           property="og:description"
-          content={description || 'Create stunning AI-generated images with IMA-GEN. Professional quality images in seconds using artificial intelligence.'}
+          content={description || 'Create stunning AI-generated images with PixelAlchemy. Professional quality images in seconds using artificial intelligence.'}
         />
-        <meta property="og:image" content={ogImage || '/images/ima-gen-og.jpg'} />
-        <meta property="og:site_name" content="IMA-GEN" />
+        <meta property="og:image" content={ogImage || '/images/pixelalchemy-og.jpg'} />
+        <meta property="og:site_name" content="PixelAlchemy" />
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://ima-gen.com/" />
-        <meta name="twitter:title" content={title || 'IMA-GEN - AI Image Generator'} />
+        <meta name="twitter:url" content="https://pixelalchemy.com/" />
+        <meta name="twitter:title" content={title || 'PixelAlchemy - AI Image Generator'} />
         <meta
           name="twitter:description"
-          content={description || 'Create stunning AI-generated images with IMA-GEN. Professional quality images in seconds using artificial intelligence.'}
+          content={description || 'Create stunning AI-generated images with PixelAlchemy. Professional quality images in seconds using artificial intelligence.'}
         />
-        <meta name="twitter:image" content={ogImage || '/images/ima-gen-og.jpg'} />
+        <meta name="twitter:image" content={ogImage || '/images/pixelalchemy-og.jpg'} />
 
         {/* Canonical URL */}
-        <link rel="canonical" href="https://ima-gen.com/" />
+        <link rel="canonical" href="https://pixelalchemy.com/" />
 
         {/* Favicon */}
         <link rel="icon" href="/favicon.ico" />
@@ -58,45 +58,45 @@ export default function Layout({ children, title, user, credits, description, ke
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="IMA-GEN" />
+        <meta name="apple-mobile-web-app-title" content="PixelAlchemy" />
 
-        {/* Schema Markup - Optimized for Real Estate */}
+        {/* Schema Markup - Optimized for AI Image Generation */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebApplication",
-              "name": "IMA-GEN",
-              "alternateName": "IMA-GEN Real Estate AI",
-              "description": "AI-powered image generator for real estate. Create professional property images, virtual staging, and interior designs in seconds.",
-              "url": "https://ima-gen.com",
-              "applicationCategory": "RealEstateApplication",
+              "name": "PixelAlchemy",
+              "alternateName": "PixelAlchemy AI Image Generator",
+              "description": "AI-powered image generator for creators. Transform your imagination into stunning visuals in seconds with advanced artificial intelligence.",
+              "url": "https://pixelalchemy.com",
+              "applicationCategory": "DesignApplication",
               "operatingSystem": "Web",
               "offers": {
                 "@type": "Offer",
                 "price": "0.10",
                 "priceCurrency": "USD",
-                "description": "AI image generation credits for real estate starting at $0.10 per image",
+                "description": "AI image generation credits starting at $0.10 per image",
                 "availability": "https://schema.org/InStock"
               },
               "featureList": [
-                "AI-powered real estate image generation",
-                "Professional virtual staging",
-                "Intelligent interior design",
-                "Property transformation",
-                "Multiple decoration styles",
+                "AI-powered image generation",
+                "Multiple artistic styles",
+                "High-quality output",
+                "Fast processing",
+                "Multiple artistic styles",
                 "Flexible credit system",
                 "Commercial use license",
                 "Instant generation",
-                "Up to 4K resolution",
-                "Automated before and after"
+                "High resolution output",
+                "Various image formats"
               ],
               "audience": {
                 "@type": "Audience",
-                "audienceType": ["Real Estate Agents", "Interior Designers", "Designers", "Property Photographers"]
+                "audienceType": ["Designers", "Artists", "Content Creators", "Marketing Professionals", "Business Owners"]
               },
-              "keywords": "AI image generator, real estate, virtual staging, interior decoration, interior design, real estate AI, professional property images, AI property transformation",
+              "keywords": "AI image generator, PixelAlchemy, artificial intelligence, text to image, AI art, digital creation, image synthesis, creative AI",
               "inLanguage": "en",
               "isAccessibleForFree": false,
               "browserRequirements": "Requires modern web browser",

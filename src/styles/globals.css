@@ -561,3 +561,19 @@ body {
   animation-delay: -8s;
   animation-duration: 11s;
 }
+
+/* Header Custom Styles */
+.header-height-custom {
+  height: 4.5rem; /* 72px - approximately 12.5% larger than 64px */
+}
+
+/* Button size adjustments for header */
+.btn-header-primary {
+  padding: 8px 16px;
+  font-size: 0.875rem; /* 14px */
+}
+
+.btn-header-secondary {
+  padding: 8px 16px;
+  font-size: 0.875rem; /* 14px */
+}

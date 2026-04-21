@@ -10,15 +10,13 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-1">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-lg bg-violet-500 flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
+              <div className="w-10 h-10 flex items-center justify-center">
+                <img src="/logo.svg" alt="PixelAlchemy Logo" className="w-10 h-10" />
               </div>
-              <span className="text-2xl font-bold text-white">IMA-GEN</span>
+              <span className="text-2xl font-bold text-white">PixelAlchemy</span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              Professional AI-powered property transformation platform. Create stunning real estate images in seconds.
+              Transform your imagination into stunning AI-generated images. Professional quality artwork in seconds using advanced artificial intelligence.
             </p>
 
             {/* Image Rights Information */}
@@ -131,7 +129,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-gray-700 text-center">
           <p className="text-gray-400 text-sm">
-            © {currentYear} IMA-GEN. All rights reserved.
+            © {currentYear} PixelAlchemy. All rights reserved.
           </p>
         </div>
       </div>

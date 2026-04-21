@@ -3,7 +3,7 @@ import { getUserFromToken } from '@/lib/auth';
 
 export default function CheckoutCancel({ user, credits }) {
   return (
-    <Layout title="Payment Cancelled - IMA-GEN" user={user} credits={credits}>
+    <Layout title="Payment Cancelled - PixelAlchemy" user={user} credits={credits}>
       <div className="max-w-4xl mx-auto px-4 py-20">
         <div className="card-glass text-center py-20">
           <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-status-warning/20 to-status-warning/5 flex items-center justify-center border border-status-warning/30">

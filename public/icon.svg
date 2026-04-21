@@ -1,4 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect fill="#8B5CF6" width="32" height="32"/>
-  <text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="white" font-family="Arial" font-size="20">🎨</text>
+  <!-- Palette body -->
+  <path d="M16 2C8.268 2 2 8.268 2 16s6.268 14 14 14c1.762 0 3.447-.327 5-.923V29c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5v.077C27.673 28.673 30 27.239 30 25c0-7.732-6.268-14-14-14z" fill="#8B5CF6"/>
+
+  <!-- Thumb hole -->
+  <circle cx="24" cy="24" r="4" fill="#1F2937"/>
+
+  <!-- Color wells -->
+  <circle cx="10" cy="12" r="3" fill="#EF4444"/> <!-- Red -->
+  <circle cx="16" cy="10" r="3" fill="#F59E0B"/> <!-- Orange -->
+  <circle cx="22" cy="12" r="3" fill="#10B981"/> <!-- Green -->
+  <circle cx="9" cy="19" r="3" fill="#3B82F6"/> <!-- Blue -->
+  <circle cx="16" cy="21" r="3" fill="#8B5CF6"/> <!-- Purple -->
 </svg>

@@ -25,8 +25,8 @@ export default function Gallery({ user, initialCredits }) {
 
   return (
     <Layout
-      title="My AI Image Gallery - IMA-GEN | Manage Your Generated Images"
-      description="Access your private AI-generated image gallery. Download, manage, and organize your AI artwork created with IMA-GEN's powerful image generation technology."
+      title="My AI Image Gallery - PixelAlchemy | Manage Your Generated Images"
+      description="Access your private AI-generated image gallery. Download, manage, and organize your AI artwork created with PixelAlchemy's powerful image generation technology."
       keywords="AI image gallery, manage AI art, download generated images, AI artwork collection, my AI images"
       user={user}
       credits={credits}

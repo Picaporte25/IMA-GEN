@@ -55,7 +55,7 @@ export default function Login() {
   };
 
   return (
-    <Layout title="Login - IMA-GEN">
+    <Layout title="Login - PixelAlchemy">
       <div className="min-h-[80vh] flex items-center justify-center px-4">
         <div className="card-glass w-full max-w-md">
           <div className="text-center mb-8">

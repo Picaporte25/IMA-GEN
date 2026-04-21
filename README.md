@@ -1,20 +1,17 @@
-# VirtuStage - Real Estate Virtual Staging
+# PixelAlchemy - AI Image Generator
 
-A modern, futuristic AI-powered virtual staging platform built with Next.js, featuring a stunning dark theme with orange/violet accents and glassmorphism effects.
+A modern, AI-powered image generation platform built with Next.js, featuring a stunning dark theme with purple accents and glassmorphism effects.
 
 ## Features
 
-- **AI Virtual Staging**: Transform empty properties with professional furniture placement
-- **Property Editing**: Edit existing property photos with AI while preserving 100% original structure
-- **Predefined Real Estate Styles**: 10 professional styles (Modern, Scandinavian, Asian Zen, Industrial, Luxury, etc.)
-- **Before/After Inspiration Gallery**: Visual examples to inspire users and demonstrate capabilities
+- **AI Image Generation**: Transform your imagination into stunning visuals
+- **Multiple Artistic Styles**: Various professional styles for different creative needs
 - **Custom Prompt Writing**: Manual prompt input with style suggestions and modifications
-- **Reference Image Support**: Upload reference images to guide transformations with visual examples
+- **Reference Image Support**: Upload reference images to guide generations
 - **Futuristic Design**: Dark theme with neon effects and glassmorphism
 - **Credit System**: Pay-per-use model, no subscriptions
-- **Multiple Design Styles**: Modern, Classic, Scandinavian, Industrial, Luxury
-- **Flexible Resolutions**: Stage properties from 512×512 to 4K quality
-- **Gallery System**: Save and manage your staged rooms
+- **Flexible Resolutions**: Generate images from 512×512 to high quality
+- **Gallery System**: Save and manage your generated images
 - **Secure Authentication**: JWT-based authentication system
 - **Payment Integration**: Paddle payment processing
 

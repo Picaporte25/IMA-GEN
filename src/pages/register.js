@@ -64,7 +64,7 @@ export default function Register() {
   };
 
   return (
-    <Layout title="Sign Up - IMA-GEN">
+    <Layout title="Sign Up - PixelAlchemy">
       <div className="min-h-[80vh] flex items-center justify-center px-4">
         <div className="card-glass w-full max-w-md">
           <div className="text-center mb-8">
