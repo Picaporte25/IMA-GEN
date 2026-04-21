@@ -26,9 +26,28 @@ export default function Register() {
       return;
     }
 
-    if (password.length < 6) {
-      console.log('❌ Password too short');
-      setError('Password must be at least 6 characters');
+    // Validar requisitos de contraseña
+    const passwordErrors = [];
+    if (password.length < 8) {
+      passwordErrors.push('at least 8 characters');
+    }
+    if (!/[A-Z]/.test(password)) {
+      passwordErrors.push('an uppercase letter (A-Z)');
+    }
+    if (!/[a-z]/.test(password)) {
+      passwordErrors.push('a lowercase letter (a-z)');
+    }
+    if (!/\d/.test(password)) {
+      passwordErrors.push('a number (0-9)');
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      passwordErrors.push('a special character (!@#$%)');
+    }
+
+    if (passwordErrors.length > 0) {
+      const errorMessage = `Password must contain ${passwordErrors.join(', ')}`;
+      console.log('❌ Password validation failed:', errorMessage);
+      setError(errorMessage);
       return;
     }
 
@@ -74,7 +93,7 @@ export default function Register() {
               </svg>
             </div>
             <h1 className="text-3xl font-bold text-neon">Start Creating</h1>
-            <p className="text-text-secondary mt-2">Get 10 free credits when you sign up</p>
+            <p className="text-text-secondary mt-2">Get 1 free credit when you sign up</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -104,11 +123,37 @@ export default function Register() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="input-futuristic"
-                placeholder="••••••••"
+                placeholder="Min 8 chars: A-Z, a-z, 0-9, !@#$%"
                 required
                 disabled={loading}
-                minLength={6}
+                minLength={8}
               />
+
+              {/* Password Requirements Indicator */}
+              {password && (
+                <div className="mt-2 space-y-1">
+                  <div className={`text-xs flex items-center gap-2 ${password.length >= 8 ? 'text-status-success' : 'text-text-muted'}`}>
+                    <span>{password.length >= 8 ? '✓' : '○'}</span>
+                    <span>At least 8 characters</span>
+                  </div>
+                  <div className={`text-xs flex items-center gap-2 ${/[A-Z]/.test(password) ? 'text-status-success' : 'text-text-muted'}`}>
+                    <span>{/[A-Z]/.test(password) ? '✓' : '○'}</span>
+                    <span>Uppercase letter (A-Z)</span>
+                  </div>
+                  <div className={`text-xs flex items-center gap-2 ${/[a-z]/.test(password) ? 'text-status-success' : 'text-text-muted'}`}>
+                    <span>{/[a-z]/.test(password) ? '✓' : '○'}</span>
+                    <span>Lowercase letter (a-z)</span>
+                  </div>
+                  <div className={`text-xs flex items-center gap-2 ${/\d/.test(password) ? 'text-status-success' : 'text-text-muted'}`}>
+                    <span>{/\d/.test(password) ? '✓' : '○'}</span>
+                    <span>Number (0-9)</span>
+                  </div>
+                  <div className={`text-xs flex items-center gap-2 ${/[!@#$%^&*(),.?":{}|<>]/.test(password) ? 'text-status-success' : 'text-text-muted'}`}>
+                    <span>{/[!@#$%^&*(),.?":{}|<>]/.test(password) ? '✓' : '○'}</span>
+                    <span>Special character (!@#$%)</span>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div>
@@ -121,7 +166,7 @@ export default function Register() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="input-futuristic"
-                placeholder="••••••••"
+                placeholder="Re-enter your password"
                 required
                 disabled={loading}
               />

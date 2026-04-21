@@ -25,7 +25,14 @@ export default function Login() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
+        // Proporcionar mensajes más específicos
+        if (data.error === 'Invalid credentials') {
+          throw new Error('Invalid email or password. Please check your credentials and try again.');
+        } else if (data.error?.includes('password')) {
+          throw new Error(data.error);
+        } else {
+          throw new Error(data.error || 'Login failed');
+        }
       }
 
       console.log('Login response:', data);
@@ -95,7 +102,7 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="input-futuristic"
-                placeholder="••••••••"
+                placeholder="Min 8 chars: A-Z, a-z, 0-9, !@#$%"
                 required
                 disabled={loading}
               />
