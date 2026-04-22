@@ -13,7 +13,9 @@
       "Bash(sed:*)",
       "Bash(mkdir:*)",
       "Bash(npm list:*)",
-      "Bash(node -c \"require\\('fs'\\).readFileSync\\('src/components/ElegantImageGenerator.jsx', 'utf-8'\\)\")"
+      "Bash(node -c \"require\\('fs'\\).readFileSync\\('src/components/ElegantImageGenerator.jsx', 'utf-8'\\)\")",
+      "Bash(node -e ':*)",
+      "Bash(node check-credits.js)"
     ]
   }
 }

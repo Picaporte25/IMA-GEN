@@ -1,4 +1,4 @@
-import { getUserFromToken, deductCredits, getUserCredits } from '@/lib/auth';
+import { getUserFromToken, verifyToken, deductCredits, getUserCredits } from '@/lib/auth';
 import { supabaseAdmin } from '@/lib/db';
 import { generateImage, calculateCredits } from '@/lib/nanoBanana';
 import { validateTextInput, sanitizeInput } from '@/lib/validation';
@@ -10,14 +10,74 @@ export default async function handler(req, res) {
   }
 
   try {
-    const user = await getUserFromToken(req);
-
-    if (!user) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
-
     // Apply security headers
     applySecurityHeaders(res);
+
+    // Try multiple authentication methods
+    let user = await getUserFromToken(req);
+
+    if (!user) {
+      // Fallback 1: Try Authorization header
+      const authHeader = req.headers.authorization;
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        const token = authHeader.substring(7);
+        try {
+          const decoded = verifyToken(token);
+          if (decoded) {
+            const { data: userFromHeader } = await supabaseAdmin
+              .from('users')
+              .select('id, email, credits')
+              .eq('id', decoded.id)
+              .single();
+
+            if (userFromHeader) {
+              user = userFromHeader;
+            }
+          }
+        } catch (error) {
+          console.error('Error with Authorization header:', error);
+        }
+      }
+
+      // Fallback 2: Try manual cookie parsing
+      if (!user && req.headers.cookie) {
+        try {
+          const cookies = req.headers.cookie.split(';').reduce((acc, cookie) => {
+            const [key, value] = cookie.trim().split('=');
+            if (key && value) {
+              acc[key] = decodeURIComponent(value);
+            }
+            return acc;
+          }, {});
+
+          const tokenFromCookie = cookies.token;
+          if (tokenFromCookie) {
+            const decoded = verifyToken(tokenFromCookie);
+            if (decoded) {
+              const { data: userFromCookie } = await supabaseAdmin
+                .from('users')
+                .select('id, email, credits')
+                .eq('id', decoded.id)
+                .single();
+
+              if (userFromCookie) {
+                user = userFromCookie;
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error with cookie parsing:', error);
+        }
+      }
+    }
+
+    if (!user) {
+      return res.status(401).json({
+        error: 'Unauthorized',
+        message: 'Please log in to generate images',
+        details: 'No valid authentication token found. Please log in again.'
+      });
+    }
 
     // Handle both JSON and FormData
     let prompt, negativePrompt, style, width, height, numberOfImages, referenceImage;
