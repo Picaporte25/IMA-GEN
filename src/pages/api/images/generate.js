@@ -103,7 +103,15 @@ export default async function handler(req, res) {
       referenceImage = body.referenceImage;
     }
 
-    console.log('📝 Generar imagen con:', { prompt: prompt.substring(0, 50) + '...', style, width, height });
+    console.log('📝 Generar imagen con:', {
+      prompt: prompt.substring(0, 50) + '...',
+      style,
+      width,
+      height,
+      numberOfImages,
+      userId: user.id,
+      userCredits: user.credits
+    });
 
     // Validate and sanitize prompt - more lenient requirements
     const promptValidation = validateTextInput(prompt, 'Prompt', 1, 2000);
@@ -153,9 +161,20 @@ export default async function handler(req, res) {
       }
     }
 
+    console.log('📝 Generar imagen con:', {
+      prompt: prompt.substring(0, 50) + '...',
+      style,
+      width,
+      height,
+      numberOfImages,
+      userId: user.id,
+      userCredits: user.credits
+    });
+
     // Validate dimensions
     const validDimensions = [512, 768, 1024, 1536];
     if (!validDimensions.includes(width) || !validDimensions.includes(height)) {
+      console.log('❌ Dimensiones inválidas:', { width, height });
       return res.status(400).json({
         error: `Invalid dimensions. Allowed values: ${validDimensions.join(', ')}px`
       });
@@ -163,6 +182,7 @@ export default async function handler(req, res) {
 
     // Validate number of images
     if (numberOfImages < 1 || numberOfImages > 4) {
+      console.log('❌ Número de imágenes inválido:', numberOfImages);
       return res.status(400).json({
         error: 'Number of images must be between 1 and 4'
       });
