@@ -5,12 +5,31 @@ import { authFetch, getLocalUser } from '@/lib/api';
 import { BEFORE_AFTER_EXAMPLES } from '@/lib/nanoBanana';
 
 export default function Home() {
-  // Initialize with localStorage data to avoid authentication flash
-  const [user, setUser] = useState(() => getLocalUser());
-  const [credits, setCredits] = useState(() => getLocalUser()?.credits || 0);
+  // Initialize with null on server side, then localStorage on client side
+  const [user, setUser] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return getLocalUser();
+    }
+    return null;
+  });
+  const [credits, setCredits] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return getLocalUser()?.credits || 0;
+    }
+    return 0;
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Initialize with localStorage data on client side only
+    if (typeof window !== 'undefined') {
+      const localUser = getLocalUser();
+      if (localUser) {
+        setUser(localUser);
+        setCredits(localUser.credits || 0);
+      }
+    }
+
     async function loadUser() {
       try {
         // First, try to get user from API

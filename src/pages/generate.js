@@ -5,8 +5,18 @@ import { getLocalUser } from '@/lib/api';
 
 export default function Generate() {
   const router = useRouter();
-  const [user, setUser] = useState(() => getLocalUser());
-  const [credits, setCredits] = useState(() => getLocalUser()?.credits || 0);
+  const [user, setUser] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return getLocalUser();
+    }
+    return null;
+  });
+  const [credits, setCredits] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return getLocalUser()?.credits || 0;
+    }
+    return 0;
+  });
 
   useEffect(() => {
     // Redirect to home page since generation is now on main page

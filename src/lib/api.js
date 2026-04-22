@@ -1,6 +1,11 @@
 // Helper function to make authenticated API calls
 export async function authFetch(url, options = {}) {
-  const token = localStorage.getItem('token');
+  let token = null;
+
+  // Only access localStorage on client side
+  if (typeof window !== 'undefined') {
+    token = localStorage.getItem('token');
+  }
 
   const headers = {
     'Content-Type': 'application/json',
@@ -21,6 +26,10 @@ export async function authFetch(url, options = {}) {
 
 // Function to get user from localStorage
 export function getLocalUser() {
+  if (typeof window === 'undefined') {
+    return null; // Return null on server side
+  }
+
   const userStr = localStorage.getItem('user');
   if (userStr) {
     try {
@@ -35,6 +44,8 @@ export function getLocalUser() {
 
 // Function to clear auth data
 export function clearAuth() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  }
 }
