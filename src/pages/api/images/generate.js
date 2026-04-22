@@ -79,55 +79,36 @@ export default async function handler(req, res) {
       });
     }
 
-    // Handle both JSON and FormData
+    // Handle JSON request (simpler and more reliable)
+    const body = req.body;
     let prompt, negativePrompt, style, width, height, numberOfImages, referenceImage;
 
-    if (req.headers['content-type']?.includes('multipart/form-data')) {
-      // FormData handling - need to parse properly
-      const formData = req.body;
-
-      // Debug logging
-      console.log('📝 FormData received:', {
-        hasPrompt: !!formData.prompt,
-        promptValue: formData.prompt,
-        hasStyle: !!formData.style,
-        styleValue: formData.style,
-        allKeys: Object.keys(formData)
-      });
-
-      prompt = formData.prompt || '';
-      negativePrompt = formData.negativePrompt || '';
-      style = formData.style || '';
-      width = parseInt(formData.width) || 1024;
-      height = parseInt(formData.height) || 1024;
-      numberOfImages = parseInt(formData.numberOfImages) || 1;
-
-      // Handle reference image - convert to base64 or upload to storage
-      if (formData.referenceImage) {
-        // For now, convert to base64 (in production, you'd upload to storage)
-        const chunks = [];
-        for await (const chunk of formData.referenceImage) {
-          chunks.push(chunk);
-        }
-        const buffer = Buffer.concat(chunks);
-        const base64 = `data:${formData.referenceImage.mimeType || 'image/jpeg'};base64,${buffer.toString('base64')}`;
-        referenceImage = base64;
-      }
-    } else {
-      // JSON handling
-      const body = req.body;
-      prompt = body.prompt;
+    if (req.headers['content-type']?.includes('application/json')) {
+      prompt = body.prompt || '';
       negativePrompt = body.negativePrompt || '';
       style = body.style || '';
       width = body.width || 1024;
       height = body.height || 1024;
       numberOfImages = body.numberOfImages || 1;
       referenceImage = body.referenceImage;
+    } else {
+      // Fallback to FormData
+      const formData = req.body;
+      prompt = formData.prompt || '';
+      negativePrompt = formData.negativePrompt || '';
+      style = formData.style || '';
+      width = parseInt(formData.width) || 1024;
+      height = parseInt(formData.height) || 1024;
+      numberOfImages = parseInt(formData.numberOfImages) || 1;
+      referenceImage = body.referenceImage;
     }
 
-    // Validate and sanitize prompt
-    const promptValidation = validateTextInput(prompt, 'Prompt', 5, 2000);
+    console.log('📝 Generar imagen con:', { prompt: prompt.substring(0, 50) + '...', style, width, height });
+
+    // Validate and sanitize prompt - more lenient requirements
+    const promptValidation = validateTextInput(prompt, 'Prompt', 1, 2000);
     if (!promptValidation.valid) {
+      console.log('❌ Validación de prompt falló:', promptValidation.error);
       return res.status(400).json({ error: promptValidation.error });
     }
     prompt = sanitizeInput(promptValidation.value);
@@ -136,17 +117,23 @@ export default async function handler(req, res) {
     if (!prompt || prompt.trim() === '') {
       if (style) {
         // Try to get the style's prompt from REAL_ESTATE_STYLES
-        const { REAL_ESTATE_STYLES } = await import('@/lib/nanoBanana');
-        const selectedStyleObj = REAL_ESTATE_STYLES.find(s => s.id === style);
-        if (selectedStyleObj && selectedStyleObj.prompt) {
-          prompt = selectedStyleObj.prompt;
+        try {
+          const { REAL_ESTATE_STYLES } = await import('@/lib/nanoBanana');
+          const selectedStyleObj = REAL_ESTATE_STYLES.find(s => s.id === style);
+          if (selectedStyleObj && selectedStyleObj.prompt) {
+            prompt = selectedStyleObj.prompt;
+            console.log('✅ Usando prompt del estilo:', prompt.substring(0, 50) + '...');
+          }
+        } catch (error) {
+          console.error('Error al obtener prompt del estilo:', error);
         }
       }
 
       if (!prompt || prompt.trim() === '') {
+        console.log('❌ No hay prompt válido');
         return res.status(400).json({
           error: 'Prompt is required',
-          message: 'Please provide a description or select a style with a predefined prompt'
+          message: 'Please provide a description or select a style'
         });
       }
     }

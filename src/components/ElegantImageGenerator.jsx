@@ -1,7 +1,8 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { REAL_ESTATE_STYLES, calculateCredits, IMAGE_RESOLUTIONS } from '@/lib/nanoBanana';
 
 export default function ElegantImageGenerator({ user, userCredits, onCreditUpdate }) {
+  const [mounted, setMounted] = useState(false);
   const [prompt, setPrompt] = useState('');
   const [negativePrompt, setNegativePrompt] = useState('');
   const [selectedStyle, setSelectedStyle] = useState('');
@@ -16,12 +17,18 @@ export default function ElegantImageGenerator({ user, userCredits, onCreditUpdat
   const [isDragging, setIsDragging] = useState(false);
 
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
   const creditsNeeded = calculateCredits(resolution.width, resolution.height, numberOfImages);
   const hasEnoughCredits = userCredits >= creditsNeeded;
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    if (file) {
+    if (file && mounted) {
       setReferenceImage(file);
       setPreviewUrl(URL.createObjectURL(file));
       setError(''); // Clear any previous errors
@@ -30,8 +37,12 @@ export default function ElegantImageGenerator({ user, userCredits, onCreditUpdat
   };
 
   const handleRemoveImage = () => {
-    setReferenceImage(null);
-    setPreviewUrl(null);
+    if (mounted) {
+      setReferenceImage(null);
+      setPreviewUrl(null);
+      setError('');
+      setSuccess('');
+    }
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -110,32 +121,45 @@ export default function ElegantImageGenerator({ user, userCredits, onCreditUpdat
     setGenerating(true);
 
     try {
-      const formData = new FormData();
-      formData.append('prompt', finalPrompt);
-      formData.append('negativePrompt', negativePrompt.trim());
-      formData.append('style', selectedStyle);
-      formData.append('width', resolution.width);
-      formData.append('height', resolution.height);
-      formData.append('numberOfImages', numberOfImages);
+      // Use JSON instead of FormData for better debugging
+      const requestBody = {
+        prompt: finalPrompt,
+        negativePrompt: negativePrompt.trim(),
+        style: selectedStyle,
+        width: resolution.width,
+        height: resolution.height,
+        numberOfImages: numberOfImages
+      };
 
-      if (referenceImage) {
-        formData.append('referenceImage', referenceImage);
-      }
+      console.log('📤 Enviando solicitud de generación:', requestBody);
 
       const response = await fetch('/api/images/generate', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(requestBody),
+        credentials: 'include'
       });
+
+      console.log('📥 Respuesta status:', response.status);
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to generate image');
+        console.error('❌ Error del servidor:', errorData);
+        throw new Error(errorData.error || errorData.details || 'Failed to generate image');
       }
 
+      const result = await response.json();
+      console.log('✅ Generación exitosa:', result);
+
       setSuccess('Image generated successfully!');
-      onCreditUpdate(userCredits - creditsNeeded);
+      if (mounted && onCreditUpdate) {
+        onCreditUpdate(userCredits - creditsNeeded);
+      }
       // Only clear prompt if it was manually entered (not from style selection)
-      if (!selectedStyle) {
+      if (!selectedStyle && mounted) {
         setPrompt('');
       }
       setNegativePrompt('');
@@ -143,9 +167,13 @@ export default function ElegantImageGenerator({ user, userCredits, onCreditUpdat
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
-      setError(err.message || 'Failed to generate image. Please try again.');
+      if (mounted) {
+        setError(err.message || 'Failed to generate image. Please try again.');
+      }
     } finally {
-      setGenerating(false);
+      if (mounted) {
+        setGenerating(false);
+      }
     }
   };
 
