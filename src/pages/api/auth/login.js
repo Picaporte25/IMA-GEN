@@ -59,7 +59,9 @@ export default async function handler(req, res) {
     auditLog('USER_LOGIN', user.id, { email: maskEmail(user.email) });
 
     // Set secure cookie
-    setAuthCookie(res, token);
+    console.log('🍪 Setting auth cookie');
+    const cookieString = setAuthCookie(res, token);
+    console.log('🍪 Cookie set:', cookieString.substring(0, 100) + '...');
 
     // Apply security headers
     applySecurityHeaders(res);

@@ -35,15 +35,16 @@ function getCookieDomain() {
  */
 export function getSecureCookieConfig() {
   const isProduction = process.env.NODE_ENV === 'production';
-  const isSecure = isProduction || process.env.VERCEL_ENV === 'production';
+  const isVercel = process.env.VERCEL_ENV !== undefined;
 
   return {
     httpOnly: true,           // Prevent JavaScript access (XSS protection)
-    secure: isSecure,         // Only send over HTTPS in production
-    sameSite: isProduction ? 'strict' : 'lax', // CSRF protection
+    secure: isProduction,     // Only send over HTTPS in production
+    sameSite: 'lax',          // Use 'lax' for both dev and prod
     path: '/',                // Available on all paths
     maxAge: 604800,           // 7 days in seconds
-    domain: getCookieDomain(), // Set domain for cross-subdomain cookies
+    // DON'T set domain in Vercel - let browser handle it
+    domain: undefined,
     priority: 'high'          // High priority cookie
   };
 }

@@ -4,8 +4,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Clear cookie
-    res.setHeader('Set-Cookie', 'token=; HttpOnly; Path=/; Max-Age=0; SameSite=Lax');
+    // Clear cookie with multiple variations for Vercel
+    res.setHeader('Set-Cookie', [
+      'token=; Path=/; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
+      'token=; Path=/; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly',
+      'token=; Path=/; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Lax',
+      'token=; Path=/; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Lax; Secure',
+    ]);
 
     res.status(200).json({ message: 'Logout successful' });
   } catch (error) {

@@ -1,22 +1,28 @@
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 
 export default function Logout() {
-  const router = useRouter();
-
   useEffect(() => {
-    const logout = async () => {
+    const doLogout = async () => {
       try {
+        // Aggressively clear localStorage
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          localStorage.clear();
+        }
+
+        // Call logout API to clear cookies
         await fetch('/api/auth/logout', { method: 'POST' });
       } catch (error) {
         console.error('Logout error:', error);
       } finally {
-        router.push('/');
+        // Force hard reload to clear all state
+        window.location.replace('/');
       }
     };
 
-    logout();
-  }, [router]);
+    doLogout();
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center">

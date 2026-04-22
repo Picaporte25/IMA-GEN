@@ -1,44 +1,32 @@
 import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import ElegantImageGenerator from '@/components/ElegantImageGenerator';
-import { authFetch, getLocalUser } from '@/lib/api';
+import { authFetch } from '@/lib/api';
 import { BEFORE_AFTER_EXAMPLES } from '@/lib/nanoBanana';
 
 export default function Home() {
-  // Initialize with null on server side, then localStorage on client side
-  const [user, setUser] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return getLocalUser();
-    }
-    return null;
-  });
-  const [credits, setCredits] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return getLocalUser()?.credits || 0;
-    }
-    return 0;
-  });
+  // Initialize with null - we'll fetch from API
+  const [user, setUser] = useState(null);
+  const [credits, setCredits] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Initialize with localStorage data on client side only
+    // Clear localStorage immediately to avoid showing stale data
     if (typeof window !== 'undefined') {
-      const localUser = getLocalUser();
-      if (localUser) {
-        setUser(localUser);
-        setCredits(localUser.credits || 0);
-      }
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
     }
 
     async function loadUser() {
       try {
-        // First, try to get user from API
+        // Try to get user from API
         const userResponse = await authFetch('/api/auth/verify');
+
         if (userResponse.ok) {
           const userData = await userResponse.json();
           setUser(userData.user);
 
-          // Also store in localStorage for persistence
+          // Store in localStorage for persistence
           if (typeof window !== 'undefined' && userData.user) {
             localStorage.setItem('user', JSON.stringify(userData.user));
           }
@@ -49,20 +37,14 @@ export default function Home() {
             setCredits(creditsData.credits);
           }
         } else {
-          // Fallback to localStorage if API fails
-          const localUser = getLocalUser();
-          if (localUser) {
-            setUser(localUser);
-            setCredits(localUser.credits || 0);
-          }
+          // API failed - user is not authenticated
+          setUser(null);
+          setCredits(0);
         }
       } catch (error) {
         console.error('Failed to load user:', error);
-        const localUser = getLocalUser();
-        if (localUser) {
-          setUser(localUser);
-          setCredits(localUser.credits || 0);
-        }
+        setUser(null);
+        setCredits(0);
       } finally {
         setLoading(false);
       }

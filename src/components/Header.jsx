@@ -59,9 +59,9 @@ export default function Header({ user, credits }) {
                 <Link href="/checkout" className="btn-secondary btn-header-secondary">
                   Buy
                 </Link>
-                <Link href="/logout" className="text-gray-400 hover:text-white transition-all duration-200 text-sm font-medium">
+                <a href="/logout" className="text-gray-400 hover:text-white transition-all duration-200 text-sm font-medium cursor-pointer">
                   Logout
-                </Link>
+                </a>
               </>
             ) : (
               <>
@@ -127,9 +127,12 @@ export default function Header({ user, credits }) {
                   <Link href="/checkout">
                     <button className="btn-secondary w-full text-sm font-medium py-2">Buy Credits</button>
                   </Link>
-                  <Link href="/logout">
-                    <button className="text-gray-400 hover:text-white w-full text-sm font-medium py-2">Logout</button>
-                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="text-gray-400 hover:text-white w-full text-sm font-medium py-2"
+                  >
+                    Logout
+                  </button>
                 </>
               )}
 
