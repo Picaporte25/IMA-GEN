@@ -82,7 +82,22 @@ export default function ElegantImageGenerator({ user, userCredits, onCreditUpdat
     setError('');
     setSuccess('');
 
-    if (!prompt.trim()) {
+    // Check if we have either a prompt or a selected style
+    if (!prompt.trim() && !selectedStyle) {
+      setError('Please describe your image or select a style');
+      return;
+    }
+
+    // If only style is selected, use the style's prompt
+    let finalPrompt = prompt.trim();
+    if (!finalPrompt && selectedStyle) {
+      const style = REAL_ESTATE_STYLES.find(s => s.id === selectedStyle);
+      if (style && style.prompt) {
+        finalPrompt = style.prompt;
+      }
+    }
+
+    if (!finalPrompt) {
       setError('Please describe your image or select a style');
       return;
     }
@@ -96,7 +111,7 @@ export default function ElegantImageGenerator({ user, userCredits, onCreditUpdat
 
     try {
       const formData = new FormData();
-      formData.append('prompt', prompt.trim());
+      formData.append('prompt', finalPrompt);
       formData.append('negativePrompt', negativePrompt.trim());
       formData.append('style', selectedStyle);
       formData.append('width', resolution.width);
@@ -119,7 +134,10 @@ export default function ElegantImageGenerator({ user, userCredits, onCreditUpdat
 
       setSuccess('Image generated successfully!');
       onCreditUpdate(userCredits - creditsNeeded);
-      setPrompt('');
+      // Only clear prompt if it was manually entered (not from style selection)
+      if (!selectedStyle) {
+        setPrompt('');
+      }
       setNegativePrompt('');
       handleRemoveImage();
 

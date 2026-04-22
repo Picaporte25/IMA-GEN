@@ -83,9 +83,19 @@ export default async function handler(req, res) {
     let prompt, negativePrompt, style, width, height, numberOfImages, referenceImage;
 
     if (req.headers['content-type']?.includes('multipart/form-data')) {
-      // FormData handling
+      // FormData handling - need to parse properly
       const formData = req.body;
-      prompt = formData.prompt;
+
+      // Debug logging
+      console.log('📝 FormData received:', {
+        hasPrompt: !!formData.prompt,
+        promptValue: formData.prompt,
+        hasStyle: !!formData.style,
+        styleValue: formData.style,
+        allKeys: Object.keys(formData)
+      });
+
+      prompt = formData.prompt || '';
       negativePrompt = formData.negativePrompt || '';
       style = formData.style || '';
       width = parseInt(formData.width) || 1024;
@@ -116,11 +126,30 @@ export default async function handler(req, res) {
     }
 
     // Validate and sanitize prompt
-    const promptValidation = validateTextInput(prompt, 'Prompt', 10, 2000);
+    const promptValidation = validateTextInput(prompt, 'Prompt', 5, 2000);
     if (!promptValidation.valid) {
       return res.status(400).json({ error: promptValidation.error });
     }
     prompt = sanitizeInput(promptValidation.value);
+
+    // If only style is provided but no prompt, use the style's prompt
+    if (!prompt || prompt.trim() === '') {
+      if (style) {
+        // Try to get the style's prompt from REAL_ESTATE_STYLES
+        const { REAL_ESTATE_STYLES } = await import('@/lib/nanoBanana');
+        const selectedStyleObj = REAL_ESTATE_STYLES.find(s => s.id === style);
+        if (selectedStyleObj && selectedStyleObj.prompt) {
+          prompt = selectedStyleObj.prompt;
+        }
+      }
+
+      if (!prompt || prompt.trim() === '') {
+        return res.status(400).json({
+          error: 'Prompt is required',
+          message: 'Please provide a description or select a style with a predefined prompt'
+        });
+      }
+    }
 
     // Sanitize and validate other inputs
     if (negativePrompt) {
