@@ -107,15 +107,9 @@ export async function getImageStatus(requestId) {
 }
 
 export function calculateCredits(width, height, numberOfImages = 1) {
-  // Calculate credits based on Z-Image Turbo pricing
-  // Price: $0.005 per megapixel
-  const megapixels = (width * height) / 1000000; // Convert to megapixels
-  const costPerImage = megapixels * 0.005; // $0.005 per megapixel
-  const totalCost = costPerImage * numberOfImages;
-
-  // Convert to credits: 1 credit = $0.001 (minimum 1 credit)
-  const credits = Math.max(1, Math.ceil(totalCost / 0.001));
-
+  // Simple credit system: 1 image = 1 credit
+  // This matches the pricing: 1 credit = $0.20
+  const credits = numberOfImages;
   return credits;
 }
 
@@ -440,20 +434,8 @@ export function calculateControlNetCredits(width, height, preprocessType) {
 
   const megapixels = (width * height) / 1000000;
 
-  // Different preprocess methods have different costs
-  const costMultiplier = {
-    'none': 1.0,           // Basic: $0.02 per MP
-    'canny': 1.2,          // Structure detection: $0.024 per MP
-    'depth': 1.3,           // Depth preservation: $0.026 per MP
-    'hed': 1.25,            // Structure detection: $0.025 per MP
-    'normal': 1.15,          // Surface preservation: $0.023 per MP
-  }[preprocessType] || 1.0;
-
-  const costPerImage = megapixels * 0.02 * costMultiplier;
-  const totalCost = costPerImage;
-
-  // Convert to credits: 1 credit = $0.001 (minimum 1 credit)
-  const credits = Math.max(1, Math.ceil(totalCost / 0.001));
+  // Simple credit system: 1 edit = 1 credit
+  const credits = 1;
 
   return credits;
 }
