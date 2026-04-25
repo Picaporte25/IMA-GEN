@@ -234,7 +234,7 @@ export default function Pricing({ user, credits }) {
                 Is there a free trial?
               </h3>
               <p className="text-text-secondary text-sm">
-                Yes! When you sign up, you get 10 free rooms to stage. No credit card required.
+                No, we offer affordable pay-as-you-go pricing. Create an account to get started.
               </p>
             </div>
           </div>

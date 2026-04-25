@@ -135,6 +135,7 @@ export default function ElegantImageGenerator({ user, userCredits, onCreditUpdat
 
       const response = await fetch('/api/images/generate', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`

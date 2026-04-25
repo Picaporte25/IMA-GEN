@@ -95,7 +95,7 @@ export default function Register() {
               </svg>
             </div>
             <h1 className="text-3xl font-bold text-neon">Start Creating</h1>
-            <p className="text-text-secondary mt-2">Get 1 free credit when you sign up</p>
+            <p className="text-text-secondary mt-2">Create an account to get started</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">

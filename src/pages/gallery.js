@@ -11,7 +11,9 @@ export default function Gallery({ user, initialCredits }) {
     if (user) {
       const interval = setInterval(async () => {
         try {
-          const response = await fetch('/api/credits/balance');
+          const response = await fetch('/api/credits/balance', {
+            credentials: 'include',
+          });
           const data = await response.json();
           setCredits(data.credits);
         } catch (error) {

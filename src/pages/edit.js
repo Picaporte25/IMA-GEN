@@ -15,7 +15,9 @@ export default function Edit({ user, initialCredits }) {
     if (user) {
       const interval = setInterval(async () => {
         try {
-          const response = await fetch('/api/credits/balance');
+          const response = await fetch('/api/credits/balance', {
+            credentials: 'include',
+          });
           const data = await response.json();
           setCredits(data.credits);
         } catch (error) {
@@ -54,7 +56,7 @@ export default function Edit({ user, initialCredits }) {
             </div>
             <h2 className="text-2xl font-bold mb-4 text-neon">Sign Up to Edit Properties</h2>
             <p className="text-text-secondary mb-6">
-              Get 10 free rooms when you sign up to try our AI property editing.
+              Create an account to use our AI property editing.
             </p>
             <div className="flex gap-4 justify-center">
               <a href="/register" className="btn-primary">Sign Up Free</a>

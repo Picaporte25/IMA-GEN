@@ -12,7 +12,10 @@ export default function Logout() {
         }
 
         // Call logout API to clear cookies
-        await fetch('/api/auth/logout', { method: 'POST' });
+        await fetch('/api/auth/logout', {
+          method: 'POST',
+          credentials: 'include',
+        });
       } catch (error) {
         console.error('Logout error:', error);
       } finally {

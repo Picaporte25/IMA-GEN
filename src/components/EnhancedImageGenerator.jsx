@@ -50,6 +50,7 @@ export default function EnhancedImageGenerator({ userCredits, onCreditUpdate }) 
       const response = await fetch('/api/images/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
           prompt: prompt.trim(),
           negativePrompt: negativePrompt.trim(),

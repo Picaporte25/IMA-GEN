@@ -20,9 +20,17 @@ export default function Checkout({ user, credits, plan }) {
     setError('');
 
     try {
+      const headers = { 'Content-Type': 'application/json' };
+      // Fallback: include token in Authorization header if available in localStorage
+      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
       const response = await fetch('/api/payment/paddle-create-checkout', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
+        credentials: 'include', // Important: include auth cookies
         body: JSON.stringify({ plan: packageData.name }),
       });
 

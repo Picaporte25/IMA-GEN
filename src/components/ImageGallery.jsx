@@ -15,7 +15,9 @@ export default function ImageGallery({ userId }) {
   const fetchImages = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/user/images?userId=${userId}`);
+      const response = await fetch(`/api/user/images?userId=${userId}`, {
+        credentials: 'include',
+      });
 
       if (!response.ok) {
         throw new Error('Failed to fetch images');
@@ -56,6 +58,7 @@ export default function ImageGallery({ userId }) {
     try {
       const response = await fetch(`/api/images/delete?id=${imageId}`, {
         method: 'DELETE',
+        credentials: 'include',
       });
 
       if (!response.ok) {

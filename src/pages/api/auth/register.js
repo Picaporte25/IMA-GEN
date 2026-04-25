@@ -73,62 +73,49 @@ export default async function handler(req, res) {
     const hashedPassword = await hashPassword(password);
     secureLog('Password hashed successfully');
 
-    // Create user with 1 free credit for trial - bypass RLS
+    // Create user with 0 credits - purchase required
     secureLog('Creating new user with service role', { email: maskEmail(sanitizedEmail) });
     const { data: newUser, error: createError } = await supabaseServiceClient
-      .rpc('create_user', {
-        p_email: sanitizedEmail,
-        p_password: hashedPassword,
-        p_credits: 1
-      });
+      .from('users')
+      .insert({
+        email: sanitizedEmail,
+        password: hashedPassword,
+        credits: 0
+      })
+      .select()
+      .single();
 
     if (createError) {
-      // Try direct insert as fallback
-      secureLog('RPC failed, trying direct insert');
-      const { data: newUser2, error: directError } = await supabaseServiceClient
-        .from('users')
-        .insert({
-          email: sanitizedEmail,
-          password: hashedPassword,
-          credits: 1
-        })
-        .select()
-        .single();
-
-      if (directError) {
-        secureError('User creation failed', directError);
-        throw directError;
-      }
-
-      // Generate token with successful insert
-      const token = generateToken(newUser2);
-      setAuthCookie(res, token);
-      applySecurityHeaders(res);
-
-      auditLog('USER_REGISTERED', newUser2.id, { email: maskEmail(newUser2.email) });
-      secureLog('Registration successful', { userId: maskUserId(newUser2.id) });
-
-      return res.status(201).json({
-        message: 'User created successfully',
-        token: token, // Include token for fallback
-        user: {
-          id: newUser2.id,
-          email: newUser2.email,
-          credits: newUser2.credits,
-        },
+      secureError('User creation failed', createError);
+      securityLog('USER_CREATION_FAILED', 'ERROR', {
+        error: createError.message,
+        email: maskEmail(sanitizedEmail)
+      });
+      return res.status(500).json({
+        error: 'Failed to create user',
+        details: createError.message
       });
     }
 
-    // Generate token with successful RPC
+    // Credits should be 0 (removed free trial)
+
+    // Generate token with successful insert
     const token = generateToken(newUser);
     setAuthCookie(res, token);
     applySecurityHeaders(res);
 
-    auditLog('USER_REGISTERED', newUser.id, { email: maskEmail(newUser.email) });
-    secureLog('Registration successful', { userId: maskUserId(newUser.id) });
+    auditLog('USER_REGISTERED', newUser.id, {
+      email: maskEmail(newUser.email),
+      initialCredits: 0
+    });
+    secureLog('Registration successful', {
+      userId: maskUserId(newUser.id),
+      credits: 0
+    });
+
     res.status(201).json({
       message: 'User created successfully',
-      token: token, // Include token for fallback
+      token: token,
       user: {
         id: newUser.id,
         email: newUser.email,
