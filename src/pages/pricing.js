@@ -234,7 +234,7 @@ export default function Pricing({ user, credits }) {
                 Is there a free trial?
               </h3>
               <p className="text-text-secondary text-sm">
-                No, we offer affordable pay-as-you-go pricing. Create an account to get started.
+                No, we offer affordable pay-as-you-go pricing. Create an account to purchase credits.
               </p>
             </div>
           </div>

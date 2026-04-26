@@ -56,7 +56,7 @@ export default function Edit({ user, initialCredits }) {
             </div>
             <h2 className="text-2xl font-bold mb-4 text-neon">Sign Up to Edit Properties</h2>
             <p className="text-text-secondary mb-6">
-              Create an account to use our AI property editing.
+              Create an account to purchase credits and use our AI property editing.
             </p>
             <div className="flex gap-4 justify-center">
               <a href="/register" className="btn-primary">Sign Up Free</a>

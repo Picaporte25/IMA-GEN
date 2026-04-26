@@ -97,7 +97,7 @@ export default async function handler(req, res) {
       });
     }
 
-    // Credits should be 0 (removed free trial)
+    // Credits should be 0 (purchase required)
 
     // Generate token with successful insert
     const token = generateToken(newUser);
