@@ -217,7 +217,7 @@ export default function ImageGenerator({ userCredits, onCreditUpdate }) {
                 </p>
                 <button
                   type="button"
-                  onClick={() => window.location.href = '/pricing'}
+                  onClick={() => window.location.href = '/checkout'}
                   className="btn-primary w-full text-sm"
                 >
                   Buy Credits

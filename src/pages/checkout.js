@@ -6,8 +6,11 @@ import { createPaddleCheckout, CREDIT_PACKAGES } from '@/lib/paddle';
 export default function Checkout({ user, credits, plan }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [selectedPlan, setSelectedPlan] = useState(plan || null);
 
-  const packageData = CREDIT_PACKAGES.find(pkg => pkg.name.toLowerCase() === plan?.toLowerCase());
+  const packageData = selectedPlan
+    ? CREDIT_PACKAGES.find(pkg => pkg.name.toLowerCase() === selectedPlan.toLowerCase())
+    : null;
 
   useEffect(() => {
     if (user && packageData) {
@@ -16,6 +19,8 @@ export default function Checkout({ user, credits, plan }) {
   }, [user, packageData]);
 
   const initiateCheckout = async () => {
+    if (!packageData) return;
+
     setLoading(true);
     setError('');
 
@@ -60,6 +65,55 @@ export default function Checkout({ user, credits, plan }) {
         </div>
       </Layout>
     );
+
+  }
+
+  // Show pricing plans if no plan is selected
+  if (!selectedPlan) {
+    return (
+      <Layout title="Choose Your Plan - PixelAlchemy" user={user} credits={credits}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-neon">
+              Choose Your Credit Package
+            </h1>
+            <p className="text-xl text-text-secondary max-w-2xl mx-auto">
+              Select the perfect package for your needs. No subscriptions, credits never expire.
+            </p>
+          </div>
+
+          {/* Pricing Cards */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {CREDIT_PACKAGES.map((pkg) => (
+              <div
+                key={pkg.name}
+                className="card-glass relative hover:border-violet-500/50 transition-all duration-300"
+              >
+                <div className="text-center mb-6">
+                  <h3 className="text-xl font-bold text-text-primary mb-2">{pkg.name}</h3>
+                  <div className="mb-2">
+                    <span className="text-5xl font-bold text-neon">{pkg.credits}</span>
+                    <span className="text-text-secondary text-lg ml-1">credits</span>
+                  </div>
+                  <div className="text-3xl font-bold text-white mb-4">${pkg.price}</div>
+                  <p className="text-text-muted text-sm">
+                    ${(pkg.price / pkg.credits).toFixed(2)} per credit
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => setSelectedPlan(pkg.name)}
+                  className="w-full py-3 rounded-lg font-semibold transition-all btn-primary"
+                >
+                  Buy Now
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Layout>
+    );
   }
 
   return (
@@ -82,7 +136,7 @@ export default function Checkout({ user, credits, plan }) {
             <p className="text-text-secondary mb-6">{error}</p>
             <div className="flex gap-4 justify-center">
               <button onClick={initiateCheckout} className="btn-primary">Try Again</button>
-              <a href="/pricing" className="btn-outline">Back to Pricing</a>
+              <button onClick={() => setSelectedPlan(null)} className="btn-outline">Back to Plans</button>
             </div>
           </div>
         ) : (

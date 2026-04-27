@@ -32,9 +32,6 @@ export default function Header({ user, credits }) {
             <Link href="/gallery" className="text-gray-400 hover:text-white transition-all duration-200 text-base font-medium">
               Gallery
             </Link>
-            <Link href="/pricing" className="text-gray-400 hover:text-white transition-all duration-200 text-base font-medium">
-              Pricing
-            </Link>
             {user && (
               <Link href="/history" className="text-gray-400 hover:text-white transition-all duration-200 text-base font-medium">
                 History
@@ -105,9 +102,6 @@ export default function Header({ user, credits }) {
               </Link>
               <Link href="/gallery" className="text-gray-400 hover:text-white transition-all duration-200 py-2 px-4 hover:bg-gray-800 rounded-lg text-sm font-medium">
                 Gallery
-              </Link>
-              <Link href="/pricing" className="text-gray-400 hover:text-white transition-all duration-200 py-2 px-4 hover:bg-gray-800 rounded-lg text-sm font-medium">
-                Pricing
               </Link>
               {user && (
                 <Link href="/history" className="text-gray-400 hover:text-white transition-all duration-200 py-2 px-4 hover:bg-gray-800 rounded-lg text-sm font-medium">

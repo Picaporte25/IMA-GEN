@@ -16,7 +16,7 @@ export default function CheckoutCancel({ user, credits }) {
             No worries! You can try again whenever you're ready.
           </p>
           <div className="flex gap-4 justify-center">
-            <a href="/pricing" className="btn-primary">Try Again</a>
+            <a href="/checkout" className="btn-primary">Try Again</a>
             <a href="/" className="btn-outline">Go Home</a>
           </div>
         </div>

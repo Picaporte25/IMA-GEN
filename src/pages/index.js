@@ -11,11 +11,11 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Clear localStorage immediately to avoid showing stale data
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-    }
+    // Don't clear localStorage - let the auth system handle it
+    // if (typeof window !== 'undefined') {
+    //   localStorage.removeItem('token');
+    //   localStorage.removeItem('user');
+    // }
 
     async function loadUser() {
       try {
@@ -746,7 +746,7 @@ export default function Home() {
                 Request Access
               </a>
               <a
-                href="/pricing"
+                href="/checkout"
                 className="px-8 py-4 border border-white/20 hover:border-white/40 text-white font-medium rounded-full transition-all duration-300 text-lg"
               >
                 View Plans

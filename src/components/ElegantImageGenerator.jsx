@@ -480,7 +480,7 @@ export default function ElegantImageGenerator({ user, userCredits, onCreditUpdat
       {!hasEnoughCredits && (
         <button
           type="button"
-          onClick={() => window.location.href = '/pricing'}
+          onClick={() => window.location.href = '/checkout'}
           className="w-full py-3 text-violet-400 hover:text-violet-300 text-sm font-light transition-colors"
         >
           Buy credits

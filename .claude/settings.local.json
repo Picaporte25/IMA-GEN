@@ -15,7 +15,9 @@
       "Bash(npm list:*)",
       "Bash(node -c \"require\\('fs'\\).readFileSync\\('src/components/ElegantImageGenerator.jsx', 'utf-8'\\)\")",
       "Bash(node -e ':*)",
-      "Bash(node check-credits.js)"
+      "Bash(node check-credits.js)",
+      "Bash(git add:*)",
+      "Bash(git commit -m ':*)"
     ]
   }
 }

@@ -136,7 +136,7 @@ export default function TransactionHistory() {
               <p className="text-4xl font-bold">{currentCredits}</p>
             </div>
             <div className="text-right">
-              <Link href="/pricing">
+              <Link href="/checkout">
                 <button className="bg-white text-purple-600 px-6 py-2 rounded-lg font-semibold hover:bg-purple-50 transition-colors">
                   Comprar Más
                 </button>
@@ -226,7 +226,7 @@ export default function TransactionHistory() {
                     : `No tienes transacciones de tipo ${getTransactionTypeLabel(filter)}.`}
                 </p>
                 {filter === 'all' && (
-                  <Link href="/pricing">
+                  <Link href="/checkout">
                     <button className="bg-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
                       Comprar Créditos
                     </button>
@@ -281,7 +281,7 @@ export default function TransactionHistory() {
               Si tienes preguntas sobre tus transacciones o necesitas un reembolso,
               por favor contáctanos a través de nuestro soporte.
             </p>
-            <Link href="/pricing">
+            <Link href="/checkout">
               <button className="text-blue-600 hover:text-blue-800 font-medium text-sm">
                 Ver planes de precios →
               </button>
