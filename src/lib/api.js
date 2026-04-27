@@ -5,6 +5,7 @@ export async function authFetch(url, options = {}) {
   // Only access localStorage on client side
   if (typeof window !== 'undefined') {
     token = localStorage.getItem('token');
+    console.log(`🔑 authFetch to ${url}:`, token ? 'Token found' : 'No token');
   }
 
   const headers = {
@@ -12,16 +13,22 @@ export async function authFetch(url, options = {}) {
     ...options.headers,
   };
 
-  // Add Authorization header if token exists (fallback mechanism)
+  // Add Authorization header if token exists (primary mechanism)
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  return fetch(url, {
+  console.log(`📤 authFetch ${url} with headers:`, Object.keys(headers));
+
+  const response = await fetch(url, {
     ...options,
     headers,
     credentials: 'include', // Important for cookie-based auth
   });
+
+  console.log(`📥 authFetch ${url} response:`, response.status);
+
+  return response;
 }
 
 // Function to get user from localStorage

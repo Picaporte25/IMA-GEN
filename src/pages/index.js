@@ -19,11 +19,80 @@ export default function Home() {
 
     async function loadUser() {
       try {
-        // Try to get user from API
+        // First, try to get user from localStorage (fastest method)
+        let localUser = null;
+        let localToken = null;
+
+        if (typeof window !== 'undefined') {
+          const userStr = localStorage.getItem('user');
+          const tokenStr = localStorage.getItem('token');
+
+          if (userStr) {
+            try {
+              localUser = JSON.parse(userStr);
+            } catch (e) {
+              console.error('Error parsing user from localStorage:', e);
+            }
+          }
+
+          if (tokenStr) {
+            localToken = tokenStr;
+          }
+        }
+
+        // If we have local user, use it immediately and update in background
+        if (localUser) {
+          console.log('✅ Using user from localStorage:', localUser.email);
+          setUser(localUser);
+
+          // Try to get fresh credits from API
+          const token = localToken || (typeof window !== 'undefined' ? localStorage.getItem('token') : null);
+          const headers = { 'Content-Type': 'application/json' };
+
+          if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+          }
+
+          try {
+            const creditsResponse = await fetch('/api/credits/balance', {
+              method: 'GET',
+              headers,
+              credentials: 'include',
+            });
+
+            if (creditsResponse.ok) {
+              const creditsData = await creditsResponse.json();
+              console.log('✅ Credits from API:', creditsData.credits);
+              setCredits(creditsData.credits);
+
+              // Update local user with fresh credits
+              if (localUser) {
+                localUser.credits = creditsData.credits;
+                localStorage.setItem('user', JSON.stringify(localUser));
+                setUser(localUser);
+              }
+            } else {
+              // If API fails, use credits from localStorage user
+              console.log('⚠️ API failed, using local credits:', localUser.credits);
+              setCredits(localUser.credits || 0);
+            }
+          } catch (error) {
+            console.error('❌ Error fetching credits:', error);
+            // Use local credits as fallback
+            setCredits(localUser.credits || 0);
+          }
+
+          setLoading(false);
+          return;
+        }
+
+        // If no local user, try API verification
+        console.log('🔍 No local user, trying API verification...');
         const userResponse = await authFetch('/api/auth/verify');
 
         if (userResponse.ok) {
           const userData = await userResponse.json();
+          console.log('✅ User from API:', userData.user.email);
           setUser(userData.user);
 
           // Store in localStorage for persistence
@@ -38,6 +107,7 @@ export default function Home() {
           }
         } else {
           // API failed - user is not authenticated
+          console.log('❌ API verification failed');
           setUser(null);
           setCredits(0);
         }

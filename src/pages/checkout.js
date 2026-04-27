@@ -26,28 +26,43 @@ export default function Checkout({ user, credits, plan }) {
 
     try {
       const headers = { 'Content-Type': 'application/json' };
-      // Fallback: include token in Authorization header if available in localStorage
-      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+
+      // Get token from multiple sources
+      let token = null;
+      if (typeof window !== 'undefined') {
+        token = localStorage.getItem('token');
+        console.log('🔑 Token from localStorage:', token ? 'Found' : 'Not found');
+      }
+
       if (token) {
         headers['Authorization'] = `Bearer ${token}`;
       }
 
+      console.log('📤 Initiating checkout for plan:', packageData.name);
+      console.log('📤 Request headers:', headers);
+
       const response = await fetch('/api/payment/paddle-create-checkout', {
         method: 'POST',
         headers,
-        credentials: 'include', // Important: include auth cookies
+        credentials: 'include',
         body: JSON.stringify({ plan: packageData.name }),
       });
+
+      console.log('📥 Response status:', response.status);
 
       const data = await response.json();
 
       if (!response.ok) {
+        console.error('❌ Checkout error:', data);
         throw new Error(data.error || 'Failed to create checkout');
       }
+
+      console.log('✅ Checkout successful, redirecting to:', data.checkout_url);
 
       // Redirect to Paddle checkout
       window.location.href = data.checkout_url;
     } catch (err) {
+      console.error('❌ Checkout error:', err);
       setError(err.message || 'Failed to create checkout');
       setLoading(false);
     }

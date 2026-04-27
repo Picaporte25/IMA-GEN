@@ -17,7 +17,8 @@
       "Bash(node -e ':*)",
       "Bash(node check-credits.js)",
       "Bash(git add:*)",
-      "Bash(git commit -m ':*)"
+      "Bash(git commit -m ':*)",
+      "Bash(git push:*)"
     ]
   }
 }

@@ -7,11 +7,18 @@ export default async function handler(req, res) {
   }
 
   try {
+    console.log('💰 Credits balance request received');
+    console.log('🍪 Cookies:', req.cookies ? 'Present' : 'Missing');
+    console.log('🔑 Auth header:', req.headers.authorization ? 'Present' : 'Missing');
+
     const user = await getUserFromToken(req);
 
     if (!user) {
+      console.log('❌ No user found from token');
       return res.status(401).json({ error: 'Unauthorized' });
     }
+
+    console.log('✅ User authenticated for credits:', user.email);
 
     const { data: userData, error } = await supabaseAdmin
       .from('users')
@@ -20,12 +27,15 @@ export default async function handler(req, res) {
       .single();
 
     if (error) {
+      console.error('❌ Error fetching user credits:', error);
       throw error;
     }
 
+    console.log('✅ User credits:', userData.credits);
+
     res.status(200).json({ credits: userData.credits });
   } catch (error) {
-    console.error('Get credits error:', error);
+    console.error('❌ Get credits error:', error);
     res.status(500).json({ error: 'Failed to get credits' });
   }
 }
