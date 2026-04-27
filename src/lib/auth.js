@@ -24,6 +24,7 @@ export function verifyToken(token) {
   try {
     console.log('🔐 Verifying JWT token...');
     console.log('🔑 Token length:', token.length);
+    console.log('🔐 Using JWT_SECRET:', JWT_SECRET ? 'Present' : 'MISSING!');
 
     const decoded = jwt.verify(token, JWT_SECRET);
 
@@ -37,10 +38,14 @@ export function verifyToken(token) {
 
     if (error.name === 'TokenExpiredError') {
       console.error('❌ Token has expired');
+      console.error('❌ Expired at:', new Date(error.expiredAt * 1000).toISOString());
+      console.error('❌ Current time:', new Date().toISOString());
     } else if (error.name === 'JsonWebTokenError') {
       console.error('❌ Invalid JWT token');
+      console.error('❌ Error details:', error.message);
     } else {
       console.error('❌ Unknown JWT error:', error.name);
+      console.error('❌ Error stack:', error.stack);
     }
 
     return null;
@@ -59,24 +64,34 @@ export async function getUserFromToken(context) {
     token = context.req.cookies.token;
     tokenSource = 'Direct cookie access (context.req.cookies.token)';
     console.log('🍪 Token found via direct cookie access');
+    console.log('🍪 Token value preview:', token.substring(0, 50) + '...');
   }
   // Method 2: Authorization header
   else if (context.req?.headers?.authorization) {
     token = context.req.headers.authorization.replace('Bearer ', '');
     tokenSource = 'Authorization header';
     console.log('🔑 Token found via Authorization header');
+    console.log('🔑 Token value preview:', token.substring(0, 50) + '...');
   }
   // Method 3: Cookie header parsing (for some environments)
   else if (context.req?.headers?.cookie) {
     console.log('🔍 Parsing cookie header manually...');
+    console.log('🔍 Cookie header preview:', context.req.headers.cookie.substring(0, 100) + '...');
+
     const cookies = context.req.headers.cookie.split(';').reduce((acc, cookie) => {
       const [key, value] = cookie.trim().split('=');
       acc[key] = value;
       return acc;
     }, {});
+
+    console.log('🔍 Parsed cookies:', Object.keys(cookies));
+
     token = cookies.token;
     tokenSource = 'Manual cookie parsing';
     console.log('🍪 Token found via manual parsing:', token ? 'Yes' : 'No');
+    if (token) {
+      console.log('🍪 Token value preview:', token.substring(0, 50) + '...');
+    }
   }
 
   if (!token) {
@@ -113,15 +128,29 @@ export async function getUserFromToken(context) {
 
     if (error) {
       console.error('❌ Database error fetching user:', error);
+      console.error('❌ Database error details:', {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint
+      });
       return null;
     }
 
     if (!user) {
       console.log('❌ User not found in database for ID:', decoded.id);
+      console.log('❌ Query was for ID:', decoded.id);
+      console.log('❌ But no user was returned from the database');
       return null;
     }
 
     console.log('✅ User found:', user.email);
+    console.log('✅ User data:', {
+      id: user.id,
+      email: user.email,
+      credits: user.credits,
+      created_at: user.created_at
+    });
     return user;
   } catch (error) {
     console.error('❌ Error getting user from token:', error);

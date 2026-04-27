@@ -113,7 +113,25 @@ export default function Checkout({ user, credits, plan }) {
         // Show diagnostic information if available
         if (data.diagnosis) {
           console.error('🔍 Server diagnosis:', data.diagnosis);
-          alert(`Authentication failed. Server diagnosis:\n${JSON.stringify(data.diagnosis, null, 2)}`);
+
+          const diagnosisText = `
+Authentication Failed - Server Diagnosis:
+
+Has Cookies: ${data.diagnosis.hasCookies}
+Cookie Keys: ${data.diagnosis.cookieKeys ? data.diagnosis.cookieKeys.join(', ') : 'None'}
+Cookie Values: ${JSON.stringify(data.diagnosis.cookieValues, null, 2)}
+Has Auth Header: ${data.diagnosis.hasAuthHeader}
+Auth Header Prefix: ${data.diagnosis.authHeaderPrefix || 'None'}
+Auth Header Length: ${data.diagnosis.authHeaderLength || 0}
+Has Cookie Header: ${data.diagnosis.hasCookieHeader}
+Cookie Header Length: ${data.diagnosis.cookieHeaderLength || 0}
+Cookie Header Preview: ${data.diagnosis.cookieHeaderPreview || 'None'}
+Timestamp: ${data.diagnosis.timestamp}
+
+Please check the browser console for more detailed logs.
+          `.trim();
+
+          alert(diagnosisText);
         }
 
         throw new Error(data.error || 'Failed to create checkout');
