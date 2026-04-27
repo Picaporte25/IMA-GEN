@@ -8,17 +8,36 @@ export default async function handler(req, res) {
 
   try {
     console.log('🛒 Paddle checkout request received');
-    console.log('🍪 Cookies:', req.cookies ? 'Present' : 'Missing');
-    console.log('🔑 Auth header:', req.headers.authorization ? 'Present' : 'Missing');
+    console.log('🍪 Cookies:', req.cookies ? JSON.stringify(Object.keys(req.cookies)) : 'Missing');
+    console.log('🔑 Auth header:', req.headers.authorization ? req.headers.authorization.substring(0, 50) + '...' : 'Missing');
+    console.log('📋 Request body:', req.body);
 
     const user = await getUserFromToken(req);
 
     if (!user) {
       console.log('❌ No user found from token');
-      return res.status(401).json({ error: 'Unauthorized' });
+
+      // Try to get more diagnostic information
+      const authDiagnosis = {
+        hasCookies: !!req.cookies,
+        cookieKeys: req.cookies ? Object.keys(req.cookies) : [],
+        hasAuthHeader: !!req.headers.authorization,
+        authHeaderPrefix: req.headers.authorization ? req.headers.authorization.substring(0, 10) : null,
+        hasCookieHeader: !!req.headers.cookie,
+        cookieHeaderLength: req.headers.cookie ? req.headers.cookie.length : 0,
+        timestamp: new Date().toISOString()
+      };
+
+      console.log('🔍 Authentication diagnosis:', JSON.stringify(authDiagnosis, null, 2));
+
+      return res.status(401).json({
+        error: 'Unauthorized',
+        diagnosis: authDiagnosis,
+        message: 'Could not authenticate user. Please try logging in again.'
+      });
     }
 
-    console.log('✅ User authenticated:', user.email);
+    console.log('✅ User authenticated:', user.email, 'ID:', user.id);
 
     const { plan } = req.body;
 
@@ -47,6 +66,11 @@ export default async function handler(req, res) {
     });
   } catch (error) {
     console.error('❌ Paddle checkout error:', error);
-    res.status(500).json({ error: 'Failed to create checkout' });
+    console.error('❌ Error stack:', error.stack);
+    res.status(500).json({
+      error: 'Failed to create checkout',
+      details: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 }

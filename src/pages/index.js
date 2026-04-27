@@ -73,7 +73,15 @@ export default function Home() {
               }
             } else {
               // If API fails, use credits from localStorage user
+              const errorData = await creditsResponse.json();
               console.log('⚠️ API failed, using local credits:', localUser.credits);
+              console.error('⚠️ Credits API error:', errorData);
+
+              // Show diagnostic information if available
+              if (errorData.diagnosis) {
+                console.error('🔍 Server diagnosis for credits:', errorData.diagnosis);
+              }
+
               setCredits(localUser.credits || 0);
             }
           } catch (error) {

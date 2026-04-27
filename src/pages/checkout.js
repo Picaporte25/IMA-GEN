@@ -109,6 +109,13 @@ export default function Checkout({ user, credits, plan }) {
 
       if (!response.ok) {
         console.error('❌ Checkout error:', data);
+
+        // Show diagnostic information if available
+        if (data.diagnosis) {
+          console.error('🔍 Server diagnosis:', data.diagnosis);
+          alert(`Authentication failed. Server diagnosis:\n${JSON.stringify(data.diagnosis, null, 2)}`);
+        }
+
         throw new Error(data.error || 'Failed to create checkout');
       }
 
