@@ -7,12 +7,51 @@ export default function Checkout({ user, credits, plan }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [selectedPlan, setSelectedPlan] = useState(plan || null);
+  const [authStatus, setAuthStatus] = useState('');
 
   const packageData = selectedPlan
     ? CREDIT_PACKAGES.find(pkg => pkg.name.toLowerCase() === selectedPlan.toLowerCase())
     : null;
 
   useEffect(() => {
+    // Check authentication status on mount
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token');
+      const userStr = localStorage.getItem('user');
+
+      console.log('🔍 Auth check on mount:');
+      console.log('🔑 Token present:', !!token);
+      console.log('👤 User present:', !!userStr);
+
+      if (token) {
+        console.log('🔑 Token length:', token.length);
+        try {
+          // Try to parse the token to see if it looks like a JWT
+          const parts = token.split('.');
+          console.log('🔑 Token parts:', parts.length);
+          if (parts.length === 3) {
+            console.log('🔑 Token looks like valid JWT');
+            try {
+              const payload = JSON.parse(atob(parts[1]));
+              console.log('👤 Token payload:', payload);
+              setAuthStatus(`Authenticated as ${payload.email}`);
+            } catch (e) {
+              console.error('❌ Error parsing token payload:', e);
+              setAuthStatus('Invalid token format');
+            }
+          } else {
+            console.log('❌ Token does not look like JWT');
+            setAuthStatus('Invalid token format');
+          }
+        } catch (e) {
+          console.error('❌ Error analyzing token:', e);
+          setAuthStatus('Token analysis failed');
+        }
+      } else {
+        setAuthStatus('No token found');
+      }
+    }
+
     if (user && packageData) {
       initiateCheckout();
     }
@@ -32,14 +71,27 @@ export default function Checkout({ user, credits, plan }) {
       if (typeof window !== 'undefined') {
         token = localStorage.getItem('token');
         console.log('🔑 Token from localStorage:', token ? 'Found' : 'Not found');
+
+        if (token) {
+          console.log('🔑 Token length:', token.length);
+          console.log('🔑 Token first 20 chars:', token.substring(0, 20) + '...');
+          console.log('🔑 Token last 20 chars:', '...' + token.substring(token.length - 20));
+        }
       }
 
       if (token) {
         headers['Authorization'] = `Bearer ${token}`;
+        console.log('📤 Authorization header set:', headers['Authorization'].substring(0, 50) + '...');
       }
 
       console.log('📤 Initiating checkout for plan:', packageData.name);
       console.log('📤 Request headers:', headers);
+      console.log('📤 Full request details:', {
+        method: 'POST',
+        url: '/api/payment/paddle-create-checkout',
+        headers: headers,
+        body: { plan: packageData.name }
+      });
 
       const response = await fetch('/api/payment/paddle-create-checkout', {
         method: 'POST',
@@ -49,8 +101,11 @@ export default function Checkout({ user, credits, plan }) {
       });
 
       console.log('📥 Response status:', response.status);
+      console.log('📥 Response headers:', Object.fromEntries(response.headers.entries()));
 
       const data = await response.json();
+
+      console.log('📥 Response data:', data);
 
       if (!response.ok) {
         console.error('❌ Checkout error:', data);
@@ -63,6 +118,7 @@ export default function Checkout({ user, credits, plan }) {
       window.location.href = data.checkout_url;
     } catch (err) {
       console.error('❌ Checkout error:', err);
+      console.error('❌ Error stack:', err.stack);
       setError(err.message || 'Failed to create checkout');
       setLoading(false);
     }
